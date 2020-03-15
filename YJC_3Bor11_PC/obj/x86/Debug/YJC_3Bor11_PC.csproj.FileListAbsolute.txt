@@ -1,0 +1,15 @@
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\obj\x86\Debug\YJCTEST.exe
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\obj\x86\Debug\YJCTEST.pdb
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\bin\Debug\YJCTEST.exe
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\bin\Debug\YJCTEST.pdb
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.Form1.resources
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\obj\x86\Debug\YJCTEST.Properties.Resources.resources
+C:\Users\LQ\633\YJC\YJCTEST\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.csproj.GenerateResource.Cache
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\bin\Debug\YJC_3Bor11_PC.exe
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\bin\Debug\YJC_3Bor11_PC.pdb
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.Form1.resources
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.Properties.Resources.resources
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.csproj.GenerateResource.Cache
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.exe
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.pdb
+C:\Users\LQ\633\YJC\YJC_3Bor11_PC\YJC_3Bor11_PC\obj\x86\Debug\YJC_3Bor11_PC.csprojResolveAssemblyReference.cache
