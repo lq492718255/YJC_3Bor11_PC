@@ -1,9 +1,0 @@
-C:\Users\LQ\Desktop\UARTchart\UARTchart\bin\Debug\UARTchart.exe
-C:\Users\LQ\Desktop\UARTchart\UARTchart\bin\Debug\UARTchart.pdb
-C:\Users\LQ\Desktop\UARTchart\UARTchart\obj\x86\Debug\UARTchart.Form1.resources
-C:\Users\LQ\Desktop\UARTchart\UARTchart\obj\x86\Debug\UARTchart.Properties.Resources.resources
-C:\Users\LQ\Desktop\UARTchart\UARTchart\obj\x86\Debug\UARTchart.csproj.GenerateResource.Cache
-C:\Users\LQ\Desktop\UARTchart\UARTchart\obj\x86\Debug\UARTchart.exe
-C:\Users\LQ\Desktop\UARTchart\UARTchart\obj\x86\Debug\UARTchart.pdb
-C:\Users\LQ\633\YJC\UARTchart\UARTchart\obj\x86\Debug\UARTchart.exe
-C:\Users\LQ\633\YJC\UARTchart\UARTchart\obj\x86\Debug\UARTchart.pdb
