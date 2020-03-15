@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
@@ -89,10 +89,13 @@
             this.textBox_kz = new System.Windows.Forms.TextBox();
             this.textBox_bz = new System.Windows.Forms.TextBox();
             this.textBox_Tva = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip_tbTva = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.contextMenuStrip_tbTva.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialPort1
@@ -102,18 +105,18 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(94, 141);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Color = System.Drawing.Color.Red;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Color = System.Drawing.Color.Red;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(1164, 638);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -124,7 +127,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(295, 67);
+            this.button1.Location = new System.Drawing.Point(295, 73);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 51);
             this.button1.TabIndex = 2;
@@ -233,7 +236,7 @@
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 18);
+            this.comboBox1.Location = new System.Drawing.Point(12, 27);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(383, 29);
             this.comboBox1.TabIndex = 12;
@@ -247,7 +250,7 @@
             this.comboBox2.Items.AddRange(new object[] {
             "9600",
             "115200"});
-            this.comboBox2.Location = new System.Drawing.Point(12, 73);
+            this.comboBox2.Location = new System.Drawing.Point(12, 81);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(97, 29);
             this.comboBox2.TabIndex = 13;
@@ -261,7 +264,7 @@
             "无校验",
             "奇校验",
             "偶校验"});
-            this.comboBox3.Location = new System.Drawing.Point(147, 73);
+            this.comboBox3.Location = new System.Drawing.Point(147, 82);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(100, 29);
             this.comboBox3.TabIndex = 14;
@@ -683,12 +686,27 @@
             // 
             // textBox_Tva
             // 
+            this.textBox_Tva.ContextMenuStrip = this.contextMenuStrip_tbTva;
             this.textBox_Tva.Location = new System.Drawing.Point(1368, 800);
             this.textBox_Tva.Name = "textBox_Tva";
             this.textBox_Tva.Size = new System.Drawing.Size(99, 28);
             this.textBox_Tva.TabIndex = 339;
             this.textBox_Tva.TextChanged += new System.EventHandler(this.textBox_Tva_TextChanged);
             this.textBox_Tva.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Tva_KeyPress);
+            // 
+            // contextMenuStrip_tbTva
+            // 
+            this.contextMenuStrip_tbTva.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip_tbTva.Name = "contextMenuStrip_tbTva";
+            this.contextMenuStrip_tbTva.Size = new System.Drawing.Size(171, 32);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(170, 28);
+            this.toolStripMenuItem1.Text = "使用接收值";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -756,6 +774,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.contextMenuStrip_tbTva.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -820,6 +839,8 @@
         private System.Windows.Forms.TextBox textBox_kz;
         private System.Windows.Forms.TextBox textBox_bz;
         private System.Windows.Forms.TextBox textBox_Tva;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_tbTva;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         
     }
 }

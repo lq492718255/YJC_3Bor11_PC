@@ -27,7 +27,7 @@ namespace YJC_3Bor11_PC
 
         List<byte> Convert_list = new List<byte>(); //串口接收等待被转换为字符串的byte码
         List<string> Params = new List<string>() { "Tpr", "AD1" }; //此列表中的参数接收显示
-        struct XYvalue { public DateTime Xval;  public string Yval;  }; //收数时间与数据
+        struct XYvalue { public DateTime Xval; public string Yval;  }; //收数时间与数据
         List<XYvalue> XYval_list = new List<XYvalue>(); //收数列表,按接收时间填充,在timer2取第一个数画曲线图并写入txt后删掉
         DateTime FirstDatadt = new DateTime(); //全图第一个数据点的x轴时间值,初始值DateTime.MinValue{0001/1/1 0:00:00}
         XYvalue XYval_pre; //刚被画到曲线图上的参数点
@@ -50,7 +50,7 @@ namespace YJC_3Bor11_PC
         {
             InitializeComponent();
             System.Drawing.Rectangle ScreenArea = System.Windows.Forms.Screen.GetWorkingArea(this);
-            this.Size = new Size(1150,670);
+            this.Size = new Size(1150, 670);
             //this.WindowState = FormWindowState.Maximized;  //最大化窗体
 
             groupBox1.Enabled = false;
@@ -71,7 +71,7 @@ namespace YJC_3Bor11_PC
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
             GetComNum();
             if (comboBox1.Items.Count > 0)
                 comboBox1.Text = comboBox1.Items[0].ToString();
@@ -108,7 +108,7 @@ namespace YJC_3Bor11_PC
             //chart1.ChartAreas[0].AxisX.Minimum = DateTime.Now.ToOADate();
             //chart1.ChartAreas[0].AxisX.Maximum = DateTime.Now.AddSeconds(Fresh_seconds).ToOADate();
             //====================设置图表Y轴显示样式==============================
-            chart1.ChartAreas[0].AxisY.LabelStyle.Interval = 100;  
+            chart1.ChartAreas[0].AxisY.LabelStyle.Interval = 100;
             chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 100;    //网格间隔
 
             timer1.Stop(); //按住按键时间计时器
@@ -163,12 +163,12 @@ namespace YJC_3Bor11_PC
                     string hexstr = string.Empty;
                     for (int i = 0; i < buf.Length; i++)
                         hexstr += string.Format("{0:X2}", buf[i]) + " ";
-                    this.BeginInvoke((MethodInvoker)delegate 
+                    this.BeginInvoke((MethodInvoker)delegate
                         {
                             //textBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n") + hexstr + "\r\n");
                             richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n"));
                             richTextBox_HEX.SelectionColor = Color.Green;
-                            richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);  
+                            richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
                             richTextBox_HEX.AppendText(hexstr + "\r\n");
                         });
                 }
@@ -176,7 +176,7 @@ namespace YJC_3Bor11_PC
                 {
                     for (int i = 0; i < buf.Length; i++)
                     {
-                        string strbufi = Encoding.ASCII.GetString(new byte[]{ buf[i] }, 0, 1);
+                        string strbufi = Encoding.ASCII.GetString(new byte[] { buf[i] }, 0, 1);
                         //this.BeginInvoke((MethodInvoker)delegate 
                         //    {   
                         //        //textBox_HEX.AppendText(strbufi);
@@ -189,17 +189,19 @@ namespace YJC_3Bor11_PC
                         {
                             string recstr = Encoding.ASCII.GetString(Convert_list.ToArray(), 0, Convert_list.ToArray().Length);
                             Convert_list.Clear();
-                            this.BeginInvoke((MethodInvoker)delegate 
+                            this.BeginInvoke((MethodInvoker)delegate
                                 {
                                     //textBox_HEX.AppendText("\r\n" + DateTime.Now.ToString("HH:mm:ss:fff <<<--"));
                                     //textBox_HEX.AppendText(recstr + "\r\n");
                                     //richTextBox_HEX.SelectionColor = Color.Green;
                                     richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n"));
                                     richTextBox_HEX.SelectionColor = Color.Green;
-                                    richTextBox_HEX.SelectionFont =new Font("宋体", 12F, FontStyle.Regular);        
+                                    richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
                                     richTextBox_HEX.AppendText(recstr + "\r\n");
+                                    if (toolStripMenuItem1.Text == "手动输入" && recstr.StartsWith("Tva="))
+                                        textBox_Tva.Text=Convert.ToInt32(recstr.Replace("Tva=", "0"), 16).ToString("X2"); 
                                 });
-                            
+
                             #region 字符接收 //不使用checkBox_HEX时此段直接放置在serialPort1_DataReceived内
                             //string recstr = serialPort1.ReadLine(); //不使用checkBox_HEX时打开
                             DateTime datetimeNow = DateTime.Now; //DateTime.FromOADate(double OLEdatetime)                
@@ -349,7 +351,7 @@ namespace YJC_3Bor11_PC
                 button_save.UseVisualStyleBackColor = true;
                 comboBox_cmd.Enabled = false;
                 button_sendcmd.Enabled = false;
-                if (SaveStatus==true)//(button_save.Text.StartsWith("停止记录")) //正在记录中
+                if (SaveStatus == true)//(button_save.Text.StartsWith("停止记录")) //正在记录中
                 {
                     Savestreamwr.Close();
                     #region 比较起止时间后 改文件名
@@ -631,14 +633,15 @@ namespace YJC_3Bor11_PC
                 }
             }
             catch (Exception err) { }
-            finally {
+            finally
+            {
                 //drawChartThread.Abort();
                 System.Environment.Exit(0);
-            }            
+            }
         }
 
         private void button_autosize_Click(object sender, EventArgs e) //自动调整chart图表,禁用,直接点击滚动条上按键
-        {            
+        {
             //定义图表区域
             this.chart1.ChartAreas.Clear();
             ChartArea chartArea1 = new ChartArea("C1");
@@ -689,7 +692,7 @@ namespace YJC_3Bor11_PC
                 chart1.ChartAreas[0].AxisX.Maximum = reviewXYval_list_last.Xval.ToOADate();
                 chart1.ChartAreas[0].AxisX.Minimum = reviewXYval_list_first.Xval.ToOADate();
             }
-            
+
         }
 
         public void Delay(int milliSecond)
@@ -716,7 +719,7 @@ namespace YJC_3Bor11_PC
         }
 
         private void timer2_Tick(object sender, EventArgs e) //定时器更新图表
-        {    
+        {
             drawChart();
         }
 
@@ -771,19 +774,19 @@ namespace YJC_3Bor11_PC
                                 chart1.ChartAreas[0].AxisX.Maximum = XYval_list.First().Xval.AddSeconds(Fresh_seconds).ToOADate();//x轴加上一个刷新周期
                                 if (radioButton_oneCyc.Checked == true) //显示最近30s数据,还需在radiooneCyc按下一刻更新X轴min值
                                     chart1.ChartAreas[0].AxisX.Minimum = XYval_list.First().Xval.ToOADate();
-                                else if (radioButton_allHis.Checked == true ) //显示全部历史数据,还需在radioallHis按下一刻更新X轴min值
+                                else if (radioButton_allHis.Checked == true) //显示全部历史数据,还需在radioallHis按下一刻更新X轴min值
                                 {
                                     if (chart1.Series[0].Points.Count > LimtDrawCnt) //全图点数过多,强制禁用显示全部历史数据
                                     {
                                         radioButton_oneCyc.Checked = true;
-                                        radioButton_allHis.Checked = false;                                        
+                                        radioButton_allHis.Checked = false;
                                     }
                                     else
                                     {
                                         chart1.ChartAreas[0].AxisX.Minimum = FirstDatadt.ToOADate(); //X轴起点设为第一个数据点时间
                                         //====更改X轴显示间隔
-                                        double mms = (XYval_list.First().Xval.AddSeconds(Fresh_seconds) - FirstDatadt).TotalMinutes/25;
-                                        chart1.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";   
+                                        double mms = (XYval_list.First().Xval.AddSeconds(Fresh_seconds) - FirstDatadt).TotalMinutes / 25;
+                                        chart1.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
                                         chart1.ChartAreas[0].AxisX.LabelStyle.IntervalType = DateTimeIntervalType.Minutes;
                                         chart1.ChartAreas[0].AxisX.LabelStyle.Interval = mms;    //坐标值间隔分钟
                                         chart1.ChartAreas[0].AxisX.LabelStyle.IsEndLabelVisible = false;   //防止X轴坐标跳跃
@@ -801,7 +804,7 @@ namespace YJC_3Bor11_PC
                             chart1.ChartAreas[0].AxisX.Maximum = XYval_list.First().Xval.AddSeconds(1).ToOADate();   //X轴坐标后移1秒
                             if (radioButton_oneCyc.Checked == true) //显示最近30s数据
                                 chart1.ChartAreas[0].AxisX.Minimum = XYval_list.First().Xval.AddSeconds(-Fresh_seconds).ToOADate();//此刻30s前作为X轴起始,只显示最近30s数据
-                            else if (radioButton_allHis.Checked == true ) //显示全部历史数据
+                            else if (radioButton_allHis.Checked == true) //显示全部历史数据
                             {
                                 if (chart1.Series[0].Points.Count > LimtDrawCnt) //全图点数过多,强制禁用显示全部历史数据
                                 {
@@ -825,7 +828,7 @@ namespace YJC_3Bor11_PC
                                 }
                             }
                         }
-                        
+
                         chart1.Series[param].Points.AddXY(XYval_list.First().Xval.ToOADate(), ydata); //XY轴打点
                         chart1.Series[param].LegendText = param + "= " + ydata.ToString(); //实时值显示在图例上
                         //CheckBox ckbx = groupBox3.Controls.Find("checkBox_" + param, true)[0] as CheckBox;
@@ -843,7 +846,7 @@ namespace YJC_3Bor11_PC
             while (drawChartThread.ThreadState == System.Threading.ThreadState.Running)
             {
                 this.BeginInvoke((MethodInvoker)delegate
-                {                    
+                {
                     drawChart();
                 });
                 Delay(1); //需要加延时否则while太快卡死
@@ -860,7 +863,7 @@ namespace YJC_3Bor11_PC
                         break;
                     }
                 }
-                
+
             }
         }
 
@@ -974,8 +977,8 @@ namespace YJC_3Bor11_PC
                 string showss = tsbe.Seconds == 0 ? "" : tsbe.Seconds + "秒";
                 nfi.MoveTo(Savefilestream.Name.Replace(".txt", "") + "(时长" + showdd + showHH + showmm + showss + ").txt");
                 #endregion
-                Savefilestream.Close();                
-                
+                Savefilestream.Close();
+
             }
         }
 
@@ -987,7 +990,7 @@ namespace YJC_3Bor11_PC
 
         private void radioButton_allHis_Click(object sender, EventArgs e)//chart曲线图显示所有历史数据
         {
-            if (chart1.Series.Count==0)
+            if (chart1.Series.Count == 0)
                 return;
             //if (((TimeSpan)(DateTime.Now - FirstDatadt)).TotalMinutes < 30) //全图时间限制
             if (chart1.Series[0].Points.Count < LimtDrawCnt)  //全图总点限制   
@@ -1006,24 +1009,24 @@ namespace YJC_3Bor11_PC
             Debug.WriteLine(ck.Name + " " + ck.Checked);
             chart1.Series[ck.Name.Replace("checkBox_", "")].Enabled = ck.Checked;
         }
-        
+
         private void button_review_Click(object sender, EventArgs e) //回放已保存记录的数据
-        {            
-            string path="";
+        {
+            string path = "";
             OpenFileDialog fileDialog = new OpenFileDialog();
             //fileDialog.InitialDirectory="C:\\";    //打开对话框后的初始目录
             fileDialog.Filter = "文本文件|*.txt|所有文件|*.*";
             fileDialog.RestoreDirectory = false;    //若为false，则打开对话框后为上次的目录。若为true，则为初始目录
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
-                
+
                 reviewXYval_list.Clear();
                 path = System.IO.Path.GetFullPath(fileDialog.FileName);//将选中的文件的路径
                 StreamReader sr = new StreamReader(path, Encoding.Default);
                 String line;
                 DateTime dt = DateTime.MinValue;
-                while ((line = sr.ReadLine()) != null )
-                {                    
+                while ((line = sr.ReadLine()) != null)
+                {
                     if (line.Contains("@")) //自己的记录数据文件
                     {
                         string dtstr = line.Split('@')[0];
@@ -1045,7 +1048,7 @@ namespace YJC_3Bor11_PC
                     }
                     else if (line.Contains("[") && line.Contains("]")) //读sscom数据文件的时间
                     {
-                        string dtstr = line.Substring(line.IndexOf("[")+1, line.IndexOf("]") - line.IndexOf("[") - 1);
+                        string dtstr = line.Substring(line.IndexOf("[") + 1, line.IndexOf("]") - line.IndexOf("[") - 1);
                         string[] strArr = dtstr.Split(new char[] { '.', ' ', ':' });
                         dt = new DateTime(1999, 09, 09, int.Parse(strArr[0]), int.Parse(strArr[1]), int.Parse(strArr[2]), int.Parse(strArr[3]));
                     }
@@ -1089,7 +1092,7 @@ namespace YJC_3Bor11_PC
                         //Delay(1);
                         chart1.Titles[0].Text = "已加载: " + ((reviewXYval_list.Count - XYval_list.Count) * 100.0 / reviewXYval_list.Count).ToString("F02") + "%  " + (reviewXYval_list.Count - XYval_list.Count) + "/" + reviewXYval_list.Count;
                         if (XYval_list.Count == 0) //回放数据全部加载完毕
-                            chart1.Titles[0].Text = "记录时间: " + reviewXYval_list_first.Xval.ToString() + " -- " + reviewXYval_list_last.Xval.ToString(); 
+                            chart1.Titles[0].Text = "记录时间: " + reviewXYval_list_first.Xval.ToString() + " -- " + reviewXYval_list_last.Xval.ToString();
                     }
                     //ReviewStatus = true;
                     //drawChartThread.Start();//回放时开线程画图
@@ -1109,10 +1112,10 @@ namespace YJC_3Bor11_PC
                     byte[] cmdbyteArray = cmdstr.Split(' ').Select(x => Convert.ToByte(x, 16)).ToArray();
                     serialPort1.Write(cmdbyteArray, 0, cmdbyteArray.Length);
                     //textBox_HEX.AppendText("\r\n" + DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n") + cmdstr + "\r\n");
-                    richTextBox_HEX.AppendText( DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n") );
+                    richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
                     richTextBox_HEX.SelectionColor = Color.Red;
-                    richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular); 
-                    richTextBox_HEX.AppendText( cmdstr + "\r\n");
+                    richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                    richTextBox_HEX.AppendText(cmdstr + "\r\n");
                 }
                 catch (Exception err) { MessageBox.Show("只能输入十六进制数值,空格间隔"); }
             }
@@ -1131,9 +1134,9 @@ namespace YJC_3Bor11_PC
             if (button_save.Text.StartsWith("停止记录")) //正在记录中
             {
                 TimeSpan ff = DateTime.Now - Startsavetime; //Math.Round((double)(ff.Seconds + ff.Milliseconds),0)
-                button_save.Text = "停止记录 " + ff.Hours.ToString("00") + ":" + ff.Minutes.ToString("00") + ":" + (ff.Seconds + ff.Milliseconds*0.001).ToString("00");
-                
-            }            
+                button_save.Text = "停止记录 " + ff.Hours.ToString("00") + ":" + ff.Minutes.ToString("00") + ":" + (ff.Seconds + ff.Milliseconds * 0.001).ToString("00");
+
+            }
         }
 
         private void Form1_Click(object sender, EventArgs e)
@@ -1149,15 +1152,15 @@ namespace YJC_3Bor11_PC
             Result = chart1.HitTest(e.X, e.Y);
             if (Result.Series != null) //点击处有曲线则获取曲线点坐标值
             {
-                double xValue = Result.Series.Points[Result.PointIndex].XValue;  
+                double xValue = Result.Series.Points[Result.PointIndex].XValue;
                 double yValue = Result.Series.Points[Result.PointIndex].YValues[0];
-                label1.Text="曲线点 " + DateTime.FromOADate(xValue).ToString("yyyy-MM-dd HH:mm:ss:fff") + "  " + yValue.ToString();
+                label1.Text = "曲线点 " + DateTime.FromOADate(xValue).ToString("yyyy-MM-dd HH:mm:ss:fff") + "  " + yValue.ToString();
             }
             else //点击处无曲线则获取空白处的坐标值
             {
                 double xValue = chart1.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
                 double yValue = chart1.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
-                label1.Text="空白处 " + DateTime.FromOADate(xValue).ToString("yyyy-MM-dd HH:mm:ss:fff") + "  " + yValue.ToString(".00");
+                label1.Text = "空白处 " + DateTime.FromOADate(xValue).ToString("yyyy-MM-dd HH:mm:ss:fff") + "  " + yValue.ToString(".00");
             }
         }
 
@@ -1181,41 +1184,41 @@ namespace YJC_3Bor11_PC
         }
 
         private void chart1_MouseLeave(object sender, EventArgs e)
-        {            
+        {
             Point mousePoint = new Point(0, 999);
-            chart1.ChartAreas[0].CursorX.SetCursorPixelPosition(mousePoint, true);  
-            chart1.ChartAreas[0].CursorY.SetCursorPixelPosition(mousePoint, true);   
+            chart1.ChartAreas[0].CursorX.SetCursorPixelPosition(mousePoint, true);
+            chart1.ChartAreas[0].CursorY.SetCursorPixelPosition(mousePoint, true);
         }
 
-        //#region 计算KB值等
-        private void kzbzoxy_cal(object sender, EventArgs e) //计算KB值,氧分压值
-        {
-            TextBox tb = sender as TextBox;
-            long kz=0, bz=0;
+        #region 计算KB值等
+        long kz = 0, bz = 0;
+        void kzbzoxy_cal(object sender, EventArgs e) //计算KB值,氧分压值
+        {            
+            TextBox tb = sender as TextBox;            
             if (tb.Name != "textBox_Tva")
             {
 
-            //double oxy1 = 0.209, oxy2 = 0.75, dqy = 101.5;
-            //int tva1 = 0x287FF8, tva2 = 0x9634BC;
-            double oxy1 = double.Parse(textBox_oxy1.Text), oxy2 = double.Parse(textBox_oxy2.Text), dqy = (double)numericUpDown1.Value;
-            if (textBox_t1.Text != "" && textBox_t2.Text != "" && textBox_t1.Text != textBox_t2.Text && oxy2 != oxy1)
-            {
-                int tva1 = Convert.ToInt32(textBox_t1.Text, 16);
-                int tva2= Convert.ToInt32(textBox_t2.Text, 16); 
-                kz = (long)((oxy2 - oxy1) * dqy / (tva2 - tva1) * 4294967296);
-                bz = (int)((oxy1 * dqy - tva1 / (tva2 - tva1) * (oxy2 - oxy1) * dqy) * 256);
-            }
-            textBox_kz.Text = kz.ToString("X2");
-            textBox_bz.Text = bz.ToString("X2");
-
+                //double oxy1 = 0.209, oxy2 = 0.75, dqy = 101.5;
+                //int tva1 = 0x287FF8, tva2 = 0x9634BC;
+                double oxy1 = double.Parse(textBox_oxy1.Text), oxy2 = double.Parse(textBox_oxy2.Text), dqy = (double)numericUpDown1.Value;
+                if (textBox_t1.Text != "" && textBox_t2.Text != "" && textBox_t1.Text != textBox_t2.Text && oxy2 != oxy1)
+                {
+                    int tva1 = Convert.ToInt32(textBox_t1.Text, 16);
+                    int tva2 = Convert.ToInt32(textBox_t2.Text, 16);
+                    kz = (long)((oxy2 - oxy1) * dqy / (tva2 - tva1) * 4294967296);
+                    bz = (int)((oxy1 * dqy - tva1 / (tva2 - tva1) * (oxy2 - oxy1) * dqy) * 256);
+                }
+                textBox_kz.Text = kz.ToString("X2");
+                textBox_bz.Text = bz.ToString("X2");
             }
 
             if (textBox_Tva.Text != "")
-            {//int Tva = 0x103FFF7;
+            {
+                //int Tva = 0x103FFF7;
                 int Tva = Convert.ToInt32(textBox_Tva.Text, 16);
                 long oxytemp = kz * Tva + bz;
                 int oxy = (int)(oxytemp / 4294967296.0 * 10);
-                label_oxy.Text = "氧分压= "+(oxy * 0.1).ToString("F01") + " kpa";
+                label_oxy.Text = "氧分压= " + (oxy * 0.1).ToString("F01") + " kpa";
             }
         }
 
@@ -1229,7 +1232,7 @@ namespace YJC_3Bor11_PC
                 tb.BackColor = Color.White;
                 return;
             }
-            e.Handled = true;            
+            e.Handled = true;
             if (e.KeyChar == 8)
                 e.Handled = false;
             if ("0123456789".IndexOf(e.KeyChar) >= 0 && !tb.Text.Substring(tb.SelectionStart + tb.SelectionLength).Contains("-"))
@@ -1320,11 +1323,25 @@ namespace YJC_3Bor11_PC
             kzbzoxy_cal(sender, e);
         }
 
-        
+        private void toolStripMenuItem1_Click(object sender, EventArgs e) //textBox_Tva右键切换Tval来源
+        {
+            if (toolStripMenuItem1.Text == "使用接收值")
+            {
+                toolStripMenuItem1.Text = "手动输入";
+                textBox_Tva.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                toolStripMenuItem1.Text = "使用接收值";
+                textBox_Tva.BackColor = Color.White;
+            }
+        }
+        #endregion
 
-        
-                
-        
+
+
+
+
         #region //chart1点击拖动鼠标画方框
         /*chart1.MouseDown += new MouseEventHandler(chart1_MouseDown);
         chart1.MouseMove += new MouseEventHandler(chart1_MouseMove);
