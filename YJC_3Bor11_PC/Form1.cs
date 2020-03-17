@@ -50,7 +50,7 @@ namespace YJC_3Bor11_PC
         {
             InitializeComponent();
             System.Drawing.Rectangle ScreenArea = System.Windows.Forms.Screen.GetWorkingArea(this);
-            this.Size = new Size(1150, 670);
+            this.Size = new Size(1150, 678);
             //this.WindowState = FormWindowState.Maximized;  //最大化窗体
 
             groupBox1.Enabled = false;
@@ -72,7 +72,7 @@ namespace YJC_3Bor11_PC
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            GetComNum();
+            comboBox1GetComNum();
             if (comboBox1.Items.Count > 0)
                 comboBox1.Text = comboBox1.Items[0].ToString();
             comboBox2.Text = "9600"; comboBox3.Text = "无校验";
@@ -475,9 +475,13 @@ namespace YJC_3Bor11_PC
         #region 获取本机串口信息
         private void comboBox1_DropDown(object sender, EventArgs e)
         {
-            GetComNum();
+            comboBox1GetComNum();
         }
-        public void GetComNum()
+        private void comboBox5_DropDown(object sender, EventArgs e)
+        {
+            comboBox5GetComNum();
+        }
+        public void comboBox1GetComNum()
         {
             comboBox1.Items.Clear();
             string[] vPortNames = SerialPort.GetPortNames();
@@ -488,6 +492,20 @@ namespace YJC_3Bor11_PC
                     if (s.Contains(vpn))
                     {
                         comboBox1.Items.Add(vpn + ": " + s);
+                        break;
+                    }
+        }
+        public void comboBox5GetComNum()
+        {
+            comboBox5.Items.Clear();
+            string[] vPortNames = SerialPort.GetPortNames();
+            string[] strArr = GetHarewareInfo(HardwareEnum.Win32_PnPEntity, "Name");
+
+            foreach (string vpn in vPortNames)
+                foreach (string s in strArr)
+                    if (s.Contains(vpn))
+                    {
+                        comboBox5.Items.Add(vpn + ": " + s);
                         break;
                     }
         }
@@ -1194,32 +1212,33 @@ namespace YJC_3Bor11_PC
         long kz = 0, bz = 0;
         void kzbzoxy_cal(object sender, EventArgs e) //计算KB值,氧分压值
         {            
-            TextBox tb = sender as TextBox;            
-            if (tb.Name != "textBox_Tva")
+            TextBox tb = sender as TextBox;
+            if (tb.Name != "textBox_Tva" && tb.Name != "textBox_kz" && tb.Name != "textBox_bz")
             {
-
                 //double oxy1 = 0.209, oxy2 = 0.75, dqy = 101.5;
                 //int tva1 = 0x287FF8, tva2 = 0x9634BC;
-                double oxy1 = double.Parse(textBox_oxy1.Text), oxy2 = double.Parse(textBox_oxy2.Text), dqy = (double)numericUpDown1.Value;
+                double oxy1 = double.Parse(textBox_oxy1.Text) * 0.01, oxy2 = double.Parse(textBox_oxy2.Text) * 0.01, dqy = (double)numericUpDown1.Value;
                 if (textBox_t1.Text != "" && textBox_t2.Text != "" && textBox_t1.Text != textBox_t2.Text && oxy2 != oxy1)
                 {
                     int tva1 = Convert.ToInt32(textBox_t1.Text, 16);
                     int tva2 = Convert.ToInt32(textBox_t2.Text, 16);
                     kz = (long)((oxy2 - oxy1) * dqy / (tva2 - tva1) * 4294967296);
-                    bz = (int)((oxy1 * dqy - tva1 / (tva2 - tva1) * (oxy2 - oxy1) * dqy) * 256);
+                    //bz = (int)((oxy1 * dqy - tva1 / (tva2 - tva1) * (oxy2 - oxy1) * dqy)*256 );
+                    bz = (int)(dqy*oxy1-kz*tva1);
                 }
                 textBox_kz.Text = kz.ToString("X2");
                 textBox_bz.Text = bz.ToString("X2");
             }
 
-            if (textBox_Tva.Text != "")
-            {
-                //int Tva = 0x103FFF7;
-                int Tva = Convert.ToInt32(textBox_Tva.Text, 16);
-                long oxytemp = kz * Tva + bz;
-                int oxy = (int)(oxytemp / 4294967296.0 * 10);
-                label_oxy.Text = "氧分压= " + (oxy * 0.1).ToString("F01") + " kpa";
-            }
+            
+            //int Tva = 0x103FFF7;
+            int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16);
+            kz = Convert.ToInt64(textBox_kz.Text == "" ? "0" : textBox_kz.Text, 16);
+            bz = Convert.ToInt64(textBox_bz.Text == "" ? "0" : textBox_bz.Text, 16);
+            long oxytemp = kz * Tva + bz;
+            int oxy = (int)(oxytemp / 4294967296.0 * 10);
+            label_oxy.Text ="氧分压= "+(oxy * 0.1).ToString("F01") +"kpa";
+            
         }
 
         private void tb1_KeyPress(object sender, KeyPressEventArgs e)
@@ -1323,6 +1342,18 @@ namespace YJC_3Bor11_PC
             kzbzoxy_cal(sender, e);
         }
 
+        private void textBox_kz_TextChanged(object sender, EventArgs e)
+        {
+            //kz = Convert.ToInt64(textBox_kz.Text == "" ? "0" : textBox_kz.Text, 16);
+            kzbzoxy_cal(sender, e);
+        }
+
+        private void textBox_bz_TextChanged(object sender, EventArgs e)
+        {
+            //bz = Convert.ToInt64(textBox_bz.Text == "" ? "0" : textBox_bz.Text, 16);
+            kzbzoxy_cal(sender, e);
+        }
+
         private void toolStripMenuItem1_Click(object sender, EventArgs e) //textBox_Tva右键切换Tval来源
         {
             if (toolStripMenuItem1.Text == "使用接收值")
@@ -1338,7 +1369,69 @@ namespace YJC_3Bor11_PC
         }
         #endregion
 
+        private void checkBox_sndOXY_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_sndOXY.Checked == true)
+            {
+                try
+                {
+                    if (kz == 0)
+                    {
+                        MessageBox.Show("K值不能为0");
+                        checkBox_sndOXY.Checked = false;
+                        return;
+                    }
+                    serialPort2.PortName = comboBox5.Text.Split(':')[0];
+                    serialPort2.Open();
+                    timer4.Start();
+                }
+                catch(Exception err)
+                {
+                    MessageBox.Show("串口打开错误");
+                    checkBox_sndOXY.Checked = false;
+                }
+            }
+            else if (checkBox_sndOXY.Checked == false)
+            {
+                try
+                {
+                    timer4.Stop();
+                    serialPort2.Close();
+                    
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show("关闭串口错误");
+                    checkBox_sndOXY.Checked = true;
+                }
+            }
+        }
 
+        private void textBox_sndOXY_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            tb1_KeyPress(sender, e);
+        }
+        
+        private void timer4_Tick(object sender, EventArgs e) //定时发送OXY
+        {
+            double sndOXY = double.Parse(textBox_sndOXY.Text == "" ? "0" : textBox_sndOXY.Text);
+            long sndOXYtemp = (long)(4294967296.0 * sndOXY);
+            int sndTva = (int)((sndOXYtemp - bz) / kz);
+            int temper = 8888;
+            byte jyh = (byte)(0x100 - (byte)(0xAA + 0x55 + (byte)((sndTva >> 24) & 0xff) + (byte)((sndTva >> 16) & 0xff) + (byte)((sndTva >> 8) & 0xff)
+                + (byte)(sndTva & 0xff)+ (byte)((temper >> 8) & 0xff)+ (byte)(temper & 0xff))) ;
+            byte[] sndarr = new byte[] { 0xAA, 0x55, (byte)((sndTva >> 24) & 0xff), (byte)((sndTva >> 16) & 0xff), 
+                (byte)((sndTva >> 8) & 0xff), (byte)(sndTva & 0xff), (byte)((temper >> 8) & 0xff), (byte)(temper & 0xff), jyh};
+            if (serialPort2.IsOpen && checkBox_sndOXY.Checked == true)
+                serialPort2.Write(sndarr, 0, sndarr.Length);
+            else
+            {
+                MessageBox.Show("发送串口未打开");
+                timer4.Stop();
+            }
+        }
+
+        
 
 
 

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
@@ -91,6 +91,11 @@
             this.textBox_Tva = new System.Windows.Forms.TextBox();
             this.contextMenuStrip_tbTva = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.textBox_sndOXY = new System.Windows.Forms.TextBox();
+            this.checkBox_sndOXY = new System.Windows.Forms.CheckBox();
+            this.serialPort2 = new System.IO.Ports.SerialPort(this.components);
+            this.timer4 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -105,18 +110,18 @@
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(94, 141);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series4.Color = System.Drawing.Color.Red;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Color = System.Drawing.Color.Red;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(1164, 638);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -599,7 +604,7 @@
             // label_oxy
             // 
             this.label_oxy.AutoSize = true;
-            this.label_oxy.Location = new System.Drawing.Point(1490, 849);
+            this.label_oxy.Location = new System.Drawing.Point(1294, 935);
             this.label_oxy.Name = "label_oxy";
             this.label_oxy.Size = new System.Drawing.Size(107, 18);
             this.label_oxy.TabIndex = 331;
@@ -674,6 +679,7 @@
             this.textBox_kz.Name = "textBox_kz";
             this.textBox_kz.Size = new System.Drawing.Size(99, 28);
             this.textBox_kz.TabIndex = 337;
+            this.textBox_kz.TextChanged += new System.EventHandler(this.textBox_kz_TextChanged);
             this.textBox_kz.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_kz_KeyPress);
             // 
             // textBox_bz
@@ -682,6 +688,7 @@
             this.textBox_bz.Name = "textBox_bz";
             this.textBox_bz.Size = new System.Drawing.Size(99, 28);
             this.textBox_bz.TabIndex = 338;
+            this.textBox_bz.TextChanged += new System.EventHandler(this.textBox_bz_TextChanged);
             this.textBox_bz.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_bz_KeyPress);
             // 
             // textBox_Tva
@@ -708,11 +715,53 @@
             this.toolStripMenuItem1.Text = "使用接收值";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // comboBox5
+            // 
+            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(1499, 800);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(156, 29);
+            this.comboBox5.TabIndex = 340;
+            this.comboBox5.DropDown += new System.EventHandler(this.comboBox5_DropDown);
+            // 
+            // textBox_sndOXY
+            // 
+            this.textBox_sndOXY.Location = new System.Drawing.Point(1554, 844);
+            this.textBox_sndOXY.Name = "textBox_sndOXY";
+            this.textBox_sndOXY.Size = new System.Drawing.Size(99, 28);
+            this.textBox_sndOXY.TabIndex = 341;
+            this.textBox_sndOXY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_sndOXY_KeyPress);
+            // 
+            // checkBox_sndOXY
+            // 
+            this.checkBox_sndOXY.AutoSize = true;
+            this.checkBox_sndOXY.Location = new System.Drawing.Point(1547, 890);
+            this.checkBox_sndOXY.Name = "checkBox_sndOXY";
+            this.checkBox_sndOXY.Size = new System.Drawing.Size(106, 22);
+            this.checkBox_sndOXY.TabIndex = 342;
+            this.checkBox_sndOXY.Text = "循环发送";
+            this.checkBox_sndOXY.UseVisualStyleBackColor = true;
+            this.checkBox_sndOXY.CheckedChanged += new System.EventHandler(this.checkBox_sndOXY_CheckedChanged);
+            // 
+            // serialPort2
+            // 
+            this.serialPort2.PortName = "COM2";
+            // 
+            // timer4
+            // 
+            this.timer4.Interval = 1000;
+            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1763, 962);
+            this.Controls.Add(this.checkBox_sndOXY);
+            this.Controls.Add(this.textBox_sndOXY);
+            this.Controls.Add(this.comboBox5);
             this.Controls.Add(this.textBox_Tva);
             this.Controls.Add(this.textBox_bz);
             this.Controls.Add(this.textBox_kz);
@@ -841,6 +890,11 @@
         private System.Windows.Forms.TextBox textBox_Tva;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_tbTva;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.TextBox textBox_sndOXY;
+        private System.Windows.Forms.CheckBox checkBox_sndOXY;
+        private System.IO.Ports.SerialPort serialPort2;
+        private System.Windows.Forms.Timer timer4;
         
     }
 }
