@@ -51,13 +51,15 @@ namespace YJC_3Bor11_PC
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32", EntryPoint = "GetPrivateProfileString")]
         private static extern long GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+        [DllImport("kernel32", EntryPoint = "GetPrivateProfileString")]
+        private static extern uint GetPrivateProfileStringA(string section, string key, string def, Byte[] retVal, int size, string filePath);
         private static string iniPath = Application.StartupPath + @"\config.ini";
-
+       
         public Form1()
         {
             InitializeComponent();
             System.Drawing.Rectangle ScreenArea = System.Windows.Forms.Screen.GetWorkingArea(this);
-            this.Size = new Size(1300, 678);
+            this.Size = new Size(1300, 636);
             //this.WindowState = FormWindowState.Maximized;  //最大化窗体
 
             groupBox1.Enabled = false;
@@ -79,25 +81,48 @@ namespace YJC_3Bor11_PC
 
             if (!File.Exists(iniPath))
             {
-                WritePrivateProfileString("参数", "dqy", "0", iniPath);
-                WritePrivateProfileString("参数", "k", "0", iniPath);
-                WritePrivateProfileString("参数", "b", "0", iniPath);
+                WritePrivateProfileString("KB参数", "dqy", "101.5", iniPath);
+                WritePrivateProfileString("KB参数", "k", "0", iniPath);
+                WritePrivateProfileString("KB参数", "b", "0", iniPath);
+                WritePrivateProfileString("接收参数", "MSpd", "", iniPath);
+                WritePrivateProfileString("接收参数", "PWM", "", iniPath);
+                WritePrivateProfileString("接收参数", "DSpd", "", iniPath);
+                WritePrivateProfileString("接收参数", "mtVol", "", iniPath);
+                WritePrivateProfileString("接收参数", "mtCur", "", iniPath);
+                WritePrivateProfileString("接收参数", "Tva", "", iniPath);
+                WritePrivateProfileString("接收参数", "Oxy", "", iniPath);
+                WritePrivateProfileString("接收参数", "InPress", "", iniPath);
+                WritePrivateProfileString("接收参数", "Tpr", "", iniPath);
+                WritePrivateProfileString("接收参数", "AD0", "", iniPath);
+                WritePrivateProfileString("接收参数", "AD1", "", iniPath);
+                WritePrivateProfileString("接收参数", "AD2", "", iniPath);
             }
             StringBuilder temp = new StringBuilder(500);
             try
             {
-                GetPrivateProfileString("参数", "dqy", "", temp, 500, iniPath);
+                GetPrivateProfileString("KB参数", "dqy", "", temp, 500, iniPath);
                 decimal dqy=0;
                 decimal.TryParse(temp.ToString(),out dqy);
                 numericUpDown1.Value = dqy;
                 temp.Clear();
-                GetPrivateProfileString("参数", "k", "", temp, 500, iniPath);
+                GetPrivateProfileString("KB参数", "k", "", temp, 500, iniPath);
                 double.TryParse(temp.ToString(), out kz);
                 textBox_kz.Text = kz.ToString();
                 temp.Clear();
-                GetPrivateProfileString("参数", "b", "", temp, 500, iniPath);
+                GetPrivateProfileString("KB参数", "b", "", temp, 500, iniPath);
                 double.TryParse(temp.ToString(), out bz);
                 textBox_bz.Text = bz.ToString();
+
+                Params.Clear();
+                byte[] buf = new byte[65536];
+                uint lenf = GetPrivateProfileStringA("接收参数", null, null, buf, buf.Length, iniPath);
+                int j = 0;
+                for (int i = 0; i < lenf; i++)
+                    if (buf[i] == 0)
+                    {
+                        Params.Add(Encoding.Default.GetString(buf, j, i - j));
+                        j = i + 1;
+                    }
             }
             catch (Exception err)
             {
@@ -720,7 +745,7 @@ namespace YJC_3Bor11_PC
             catch (Exception err) { }
             finally
             {
-                WritePrivateProfileString("参数", "dqy", numericUpDown1.Value.ToString(), iniPath);
+                WritePrivateProfileString("KB参数", "dqy", numericUpDown1.Value.ToString(), iniPath);
                 //drawChartThread.Abort();
                 System.Environment.Exit(0);
             }
@@ -1189,10 +1214,11 @@ namespace YJC_3Bor11_PC
 
         private void button_sendcmd_Click(object sender, EventArgs e) //发送命令
         {
-            string cmdstr;
+            string cmdstr = comboBox_cmd.Text;
             if (checkBox_HEXsend.Checked == true)
             {
-                cmdstr = comboBox_cmd.Text.Replace("3B通气", "").Replace("3B关气", "").Replace("11通气", "").Replace("11关气", "").Replace("修改KB", "").Trim();
+                if (comboBox_cmd.Text.Contains("(")&&comboBox_cmd.Text.Contains(")"))
+                    cmdstr = comboBox_cmd.Text.Remove(comboBox_cmd.Text.IndexOf("("), comboBox_cmd.Text.IndexOf(")")-comboBox_cmd.Text.IndexOf("(")+1).Trim();
                 try
                 {
                     byte[] cmdbyteArray = cmdstr.Split(' ').Select(x => Convert.ToByte(x, 16)).ToArray();
@@ -1276,7 +1302,7 @@ namespace YJC_3Bor11_PC
             chart1.ChartAreas[0].CursorY.SetCursorPixelPosition(mousePoint, true);
         }
 
-        #region 计算KB值等
+        #region 计算KB值,实际氧分压,精度等
         private void tb1_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Regex.IsMatch(text.Replace("-", ""), @"^\d+$") //匹配是否是数字
@@ -1378,7 +1404,7 @@ namespace YJC_3Bor11_PC
                 textBox_kz.Text = b_k[1].ToString();
             }
             else
-                MessageBox.Show("填入至少两组氧分压与Tva");
+                MessageBox.Show("填入至少两组氧浓度与Tva");
         }
         private void textBox_kz_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -1407,7 +1433,7 @@ namespace YJC_3Bor11_PC
             //int oxy = (int)(oxytemp / 4294967296.0 * 10);
             //label_oxy.Text = "氧分压= " + (oxy * 0.1).ToString("F04") + "kpa";
             Double.TryParse(textBox_kz.Text, out kz);
-            WritePrivateProfileString("参数", "k", kz.ToString(), iniPath);
+            WritePrivateProfileString("KB参数", "k", kz.ToString(), iniPath);
             label_oxy.Text = "实际氧分压= " + (Tva * kz + bz).ToString("F04") + "kpa";            
             try
             {
@@ -1442,7 +1468,7 @@ namespace YJC_3Bor11_PC
             //int oxy = (int)(oxytemp / 4294967296.0 * 10);
             //label_oxy.Text = "氧分压= " + (oxy * 0.1).ToString("F04") + "kpa";
             Double.TryParse(textBox_bz.Text, out bz);
-            WritePrivateProfileString("参数", "b", bz.ToString(), iniPath);
+            WritePrivateProfileString("KB参数", "b", bz.ToString(), iniPath);
             label_oxy.Text = "实际氧分压= " + (Tva * kz + bz).ToString("F04") + "kpa";
             try
             {
@@ -1452,6 +1478,11 @@ namespace YJC_3Bor11_PC
         }
         private void button_sndkz_Click(object sender, EventArgs e) //发送修改K值
         {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("确定要修改K值?" , "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
+
             ulong ukz = BitConverter.ToUInt64(BitConverter.GetBytes(kz), 0);
             byte[] ukz_arr = new byte[] { 0xC1, (byte)ukz, (byte)(ukz >> 8), (byte)(ukz >> 16), (byte)(ukz >> 24), (byte)(ukz >> 32), (byte)(ukz >> 40), (byte)(ukz >> 48), (byte)(ukz >> 56), 0x1C };
             if (serialPort1.IsOpen)
@@ -1463,6 +1494,10 @@ namespace YJC_3Bor11_PC
         }
         private void button_sndbz_Click(object sender, EventArgs e) //发送修改B值
         {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("确定要修改B值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
             ulong ubz = BitConverter.ToUInt64(BitConverter.GetBytes(kz), 0);
             byte[] ubz_arr = new byte[] { 0xC2, (byte)ubz, (byte)(ubz >> 8), (byte)(ubz >> 16), (byte)(ubz >> 24), (byte)(ubz >> 32), (byte)(ubz >> 40), (byte)(ubz >> 48), (byte)(ubz >> 56), 0x2C };
             if (serialPort1.IsOpen)
@@ -1619,7 +1654,7 @@ namespace YJC_3Bor11_PC
 
         #endregion
 
-        #region 模拟从片采集到的氧分压值kpa,向主片发生Tval数据
+        #region 模拟从片采集到的氧分压值kpa生成Tval向主片发送
         private void checkBox_sndOXY_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox_sndOXY.Checked == true)
@@ -1683,11 +1718,7 @@ namespace YJC_3Bor11_PC
         }
         #endregion
 
-        
-
-        
-        
-   
+           
 
 
         #region //chart1点击拖动鼠标画方框

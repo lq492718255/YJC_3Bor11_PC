@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
@@ -82,13 +82,13 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox_oxy1 = new System.Windows.Forms.TextBox();
             this.textBox_t1 = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip_tbTva = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox_oxy2 = new System.Windows.Forms.TextBox();
             this.textBox_t2 = new System.Windows.Forms.TextBox();
             this.textBox_kz = new System.Windows.Forms.TextBox();
             this.textBox_bz = new System.Windows.Forms.TextBox();
             this.textBox_Tva = new System.Windows.Forms.TextBox();
-            this.contextMenuStrip_tbTva = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.textBox_sndOXY = new System.Windows.Forms.TextBox();
             this.checkBox_sndOXY = new System.Windows.Forms.CheckBox();
@@ -128,18 +128,18 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(94, 141);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Color = System.Drawing.Color.Red;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Color = System.Drawing.Color.Red;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(1124, 638);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -462,13 +462,13 @@
             // 
             // textBox_HEX
             // 
-            this.textBox_HEX.Location = new System.Drawing.Point(1229, 107);
+            this.textBox_HEX.Location = new System.Drawing.Point(1565, 106);
             this.textBox_HEX.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_HEX.Multiline = true;
             this.textBox_HEX.Name = "textBox_HEX";
             this.textBox_HEX.ReadOnly = true;
             this.textBox_HEX.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_HEX.Size = new System.Drawing.Size(56, 26);
+            this.textBox_HEX.Size = new System.Drawing.Size(57, 26);
             this.textBox_HEX.TabIndex = 316;
             this.textBox_HEX.Visible = false;
             // 
@@ -488,13 +488,14 @@
             this.comboBox_cmd.FormattingEnabled = true;
             this.comboBox_cmd.Items.AddRange(new object[] {
             "BB 00 B0",
-            "BB 02 B2",
-            "3B通气 55 AA 01 00 00 00 00 00 00 00 00 00",
-            "3B关气 55 AA 00 00 00 00 00 00 00 00 00 01",
-            "11通气 AA 55 00 00 62 02 00 00 00 00 00 9D",
-            "11关气 AA 55 00 00 EA 01 00 00 00 00 00 16",
-            "修改KB CC 11 22 33 44 55 66 77 89 C9",
-            "修改KB CC 00 00 80 23 00 00 00 F1 C1"});
+            "(电机)BB 01 B1",
+            "(氧分压Tva) BB 02 B2",
+            "(kb温度AD,UR) BB 03 B3",
+            "(各个状态) BB 04 B4",
+            "(3B通气) 55 AA 01 00 00 00 00 00 00 00 00 00",
+            "(3B关气) 55 AA 00 00 00 00 00 00 00 00 00 01",
+            "(11通气) AA 55 00 00 62 02 00 00 00 00 00 9D",
+            "(11关气) AA 55 00 00 EA 01 00 00 00 00 00 16"});
             this.comboBox_cmd.Location = new System.Drawing.Point(994, 37);
             this.comboBox_cmd.Name = "comboBox_cmd";
             this.comboBox_cmd.Size = new System.Drawing.Size(550, 30);
@@ -586,7 +587,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1633, 584);
+            this.label12.Location = new System.Drawing.Point(1633, 587);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(35, 18);
             this.label12.TabIndex = 329;
@@ -653,6 +654,21 @@
             this.textBox_t1.TabIndex = 334;
             this.textBox_t1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t1_KeyPress);
             // 
+            // contextMenuStrip_tbTva
+            // 
+            this.contextMenuStrip_tbTva.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip_tbTva.Name = "contextMenuStrip_tbTva";
+            this.contextMenuStrip_tbTva.Size = new System.Drawing.Size(171, 32);
+            this.contextMenuStrip_tbTva.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_tbTva_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(170, 28);
+            this.toolStripMenuItem1.Text = "使用接收值";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // textBox_oxy2
             // 
             this.textBox_oxy2.Location = new System.Drawing.Point(1646, 284);
@@ -682,7 +698,7 @@
             // 
             // textBox_bz
             // 
-            this.textBox_bz.Location = new System.Drawing.Point(1673, 578);
+            this.textBox_bz.Location = new System.Drawing.Point(1673, 581);
             this.textBox_bz.Name = "textBox_bz";
             this.textBox_bz.Size = new System.Drawing.Size(114, 28);
             this.textBox_bz.TabIndex = 338;
@@ -698,21 +714,6 @@
             this.textBox_Tva.TabIndex = 339;
             this.textBox_Tva.TextChanged += new System.EventHandler(this.textBox_Tva_TextChanged);
             this.textBox_Tva.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Tva_KeyPress);
-            // 
-            // contextMenuStrip_tbTva
-            // 
-            this.contextMenuStrip_tbTva.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.contextMenuStrip_tbTva.Name = "contextMenuStrip_tbTva";
-            this.contextMenuStrip_tbTva.Size = new System.Drawing.Size(171, 32);
-            this.contextMenuStrip_tbTva.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_tbTva_Opening);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(170, 28);
-            this.toolStripMenuItem1.Text = "使用接收值";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // comboBox5
             // 
@@ -797,7 +798,7 @@
             this.button_sndkz.Name = "button_sndkz";
             this.button_sndkz.Size = new System.Drawing.Size(59, 34);
             this.button_sndkz.TabIndex = 347;
-            this.button_sndkz.Text = "发K";
+            this.button_sndkz.Text = "改K";
             this.button_sndkz.UseVisualStyleBackColor = true;
             this.button_sndkz.Click += new System.EventHandler(this.button_sndkz_Click);
             // 
@@ -807,7 +808,7 @@
             this.button_sndbz.Name = "button_sndbz";
             this.button_sndbz.Size = new System.Drawing.Size(59, 34);
             this.button_sndbz.TabIndex = 348;
-            this.button_sndbz.Text = "发B";
+            this.button_sndbz.Text = "改B";
             this.button_sndbz.UseVisualStyleBackColor = true;
             this.button_sndbz.Click += new System.EventHandler(this.button_sndbz_Click);
             // 
@@ -995,7 +996,7 @@
             this.Controls.Add(this.chart1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "YJC_3Bor11_PC";
+            this.Text = "YJC-3B/11监控";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
