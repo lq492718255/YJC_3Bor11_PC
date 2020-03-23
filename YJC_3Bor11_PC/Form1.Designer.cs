@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
@@ -64,7 +64,6 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.checkBox_HEXshow = new System.Windows.Forms.CheckBox();
             this.button_save = new System.Windows.Forms.Button();
-            this.textBox_HEX = new System.Windows.Forms.TextBox();
             this.button_review = new System.Windows.Forms.Button();
             this.comboBox_cmd = new System.Windows.Forms.ComboBox();
             this.button_sendcmd = new System.Windows.Forms.Button();
@@ -100,7 +99,6 @@
             this.pictureBox_SA = new System.Windows.Forms.PictureBox();
             this.button_sndkz = new System.Windows.Forms.Button();
             this.button_sndbz = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.textBox_oxy3 = new System.Windows.Forms.TextBox();
             this.textBox_oxy4 = new System.Windows.Forms.TextBox();
             this.textBox_oxy5 = new System.Windows.Forms.TextBox();
@@ -112,6 +110,8 @@
             this.label_jd = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.timer5 = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip_ti = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -119,6 +119,7 @@
             this.contextMenuStrip_tbTva.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_SA)).BeginInit();
+            this.contextMenuStrip_ti.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialPort1
@@ -128,18 +129,18 @@
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(94, 141);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series4.Color = System.Drawing.Color.Red;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Color = System.Drawing.Color.Red;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(1124, 638);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -420,9 +421,9 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Location = new System.Drawing.Point(1267, 131);
+            this.groupBox3.Location = new System.Drawing.Point(1231, 131);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(144, 648);
+            this.groupBox3.Size = new System.Drawing.Size(123, 648);
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             // 
@@ -443,7 +444,7 @@
             // checkBox_HEXshow
             // 
             this.checkBox_HEXshow.AutoSize = true;
-            this.checkBox_HEXshow.Location = new System.Drawing.Point(1458, 114);
+            this.checkBox_HEXshow.Location = new System.Drawing.Point(1444, 114);
             this.checkBox_HEXshow.Name = "checkBox_HEXshow";
             this.checkBox_HEXshow.Size = new System.Drawing.Size(97, 22);
             this.checkBox_HEXshow.TabIndex = 26;
@@ -459,18 +460,6 @@
             this.button_save.Text = "开始记录";
             this.button_save.UseVisualStyleBackColor = true;
             this.button_save.Click += new System.EventHandler(this.button_save_Click);
-            // 
-            // textBox_HEX
-            // 
-            this.textBox_HEX.Location = new System.Drawing.Point(1565, 106);
-            this.textBox_HEX.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_HEX.Multiline = true;
-            this.textBox_HEX.Name = "textBox_HEX";
-            this.textBox_HEX.ReadOnly = true;
-            this.textBox_HEX.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_HEX.Size = new System.Drawing.Size(57, 26);
-            this.textBox_HEX.TabIndex = 316;
-            this.textBox_HEX.Visible = false;
             // 
             // button_review
             // 
@@ -527,7 +516,7 @@
             // 
             this.richTextBox_HEX.BackColor = System.Drawing.SystemColors.Window;
             this.richTextBox_HEX.HideSelection = false;
-            this.richTextBox_HEX.Location = new System.Drawing.Point(1384, 142);
+            this.richTextBox_HEX.Location = new System.Drawing.Point(1368, 142);
             this.richTextBox_HEX.Name = "richTextBox_HEX";
             this.richTextBox_HEX.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.richTextBox_HEX.Size = new System.Drawing.Size(238, 637);
@@ -551,7 +540,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1638, 166);
+            this.label6.Location = new System.Drawing.Point(1626, 147);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(107, 18);
             this.label6.TabIndex = 323;
@@ -560,7 +549,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1637, 212);
+            this.label7.Location = new System.Drawing.Point(1625, 190);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(89, 18);
             this.label7.TabIndex = 324;
@@ -569,16 +558,16 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1753, 212);
+            this.label8.Location = new System.Drawing.Point(1731, 190);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(89, 18);
+            this.label8.Size = new System.Drawing.Size(125, 18);
             this.label8.TabIndex = 325;
-            this.label8.Text = "Tva值(0x)";
+            this.label8.Text = "Tva标定值(0x)";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(1633, 530);
+            this.label11.Location = new System.Drawing.Point(1621, 508);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(35, 18);
             this.label11.TabIndex = 328;
@@ -587,7 +576,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1633, 587);
+            this.label12.Location = new System.Drawing.Point(1621, 565);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(35, 18);
             this.label12.TabIndex = 329;
@@ -596,20 +585,20 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(1640, 650);
+            this.label13.Location = new System.Drawing.Point(1620, 625);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(80, 18);
+            this.label13.Size = new System.Drawing.Size(116, 18);
             this.label13.TabIndex = 330;
-            this.label13.Text = "Tva值:0x";
+            this.label13.Text = "Tva实时值:0x";
             // 
             // label_oxy
             // 
             this.label_oxy.AutoSize = true;
-            this.label_oxy.Location = new System.Drawing.Point(1639, 705);
+            this.label_oxy.Location = new System.Drawing.Point(1621, 670);
             this.label_oxy.Name = "label_oxy";
             this.label_oxy.Size = new System.Drawing.Size(143, 18);
             this.label_oxy.TabIndex = 331;
-            this.label_oxy.Text = "实际氧分压(kpa)";
+            this.label_oxy.Text = "实时氧分压(kpa)";
             // 
             // numericUpDown1
             // 
@@ -620,7 +609,7 @@
             0,
             0,
             65536});
-            this.numericUpDown1.Location = new System.Drawing.Point(1756, 160);
+            this.numericUpDown1.Location = new System.Drawing.Point(1744, 141);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             100000,
@@ -629,16 +618,17 @@
             0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(94, 31);
-            this.numericUpDown1.TabIndex = 332;
+            this.numericUpDown1.TabIndex = 330;
             this.numericUpDown1.Value = new decimal(new int[] {
             1012,
             0,
             0,
             65536});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // textBox_oxy1
             // 
-            this.textBox_oxy1.Location = new System.Drawing.Point(1646, 240);
+            this.textBox_oxy1.Location = new System.Drawing.Point(1634, 216);
             this.textBox_oxy1.Name = "textBox_oxy1";
             this.textBox_oxy1.Size = new System.Drawing.Size(71, 28);
             this.textBox_oxy1.TabIndex = 333;
@@ -647,11 +637,11 @@
             // 
             // textBox_t1
             // 
-            this.textBox_t1.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_t1.Location = new System.Drawing.Point(1751, 240);
+            this.textBox_t1.ContextMenuStrip = this.contextMenuStrip_ti;
+            this.textBox_t1.Location = new System.Drawing.Point(1739, 216);
             this.textBox_t1.Name = "textBox_t1";
             this.textBox_t1.Size = new System.Drawing.Size(99, 28);
-            this.textBox_t1.TabIndex = 334;
+            this.textBox_t1.TabIndex = 331;
             this.textBox_t1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t1_KeyPress);
             // 
             // contextMenuStrip_tbTva
@@ -660,7 +650,6 @@
             this.toolStripMenuItem1});
             this.contextMenuStrip_tbTva.Name = "contextMenuStrip_tbTva";
             this.contextMenuStrip_tbTva.Size = new System.Drawing.Size(171, 32);
-            this.contextMenuStrip_tbTva.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_tbTva_Opening);
             // 
             // toolStripMenuItem1
             // 
@@ -671,7 +660,7 @@
             // 
             // textBox_oxy2
             // 
-            this.textBox_oxy2.Location = new System.Drawing.Point(1646, 284);
+            this.textBox_oxy2.Location = new System.Drawing.Point(1634, 260);
             this.textBox_oxy2.Name = "textBox_oxy2";
             this.textBox_oxy2.Size = new System.Drawing.Size(71, 28);
             this.textBox_oxy2.TabIndex = 335;
@@ -680,16 +669,16 @@
             // 
             // textBox_t2
             // 
-            this.textBox_t2.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_t2.Location = new System.Drawing.Point(1751, 284);
+            this.textBox_t2.ContextMenuStrip = this.contextMenuStrip_ti;
+            this.textBox_t2.Location = new System.Drawing.Point(1739, 260);
             this.textBox_t2.Name = "textBox_t2";
             this.textBox_t2.Size = new System.Drawing.Size(99, 28);
-            this.textBox_t2.TabIndex = 336;
+            this.textBox_t2.TabIndex = 332;
             this.textBox_t2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t2_KeyPress);
             // 
             // textBox_kz
             // 
-            this.textBox_kz.Location = new System.Drawing.Point(1673, 525);
+            this.textBox_kz.Location = new System.Drawing.Point(1661, 503);
             this.textBox_kz.Name = "textBox_kz";
             this.textBox_kz.Size = new System.Drawing.Size(114, 28);
             this.textBox_kz.TabIndex = 337;
@@ -698,7 +687,7 @@
             // 
             // textBox_bz
             // 
-            this.textBox_bz.Location = new System.Drawing.Point(1673, 581);
+            this.textBox_bz.Location = new System.Drawing.Point(1661, 559);
             this.textBox_bz.Name = "textBox_bz";
             this.textBox_bz.Size = new System.Drawing.Size(114, 28);
             this.textBox_bz.TabIndex = 338;
@@ -708,9 +697,9 @@
             // textBox_Tva
             // 
             this.textBox_Tva.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_Tva.Location = new System.Drawing.Point(1723, 644);
+            this.textBox_Tva.Location = new System.Drawing.Point(1740, 619);
             this.textBox_Tva.Name = "textBox_Tva";
-            this.textBox_Tva.Size = new System.Drawing.Size(119, 28);
+            this.textBox_Tva.Size = new System.Drawing.Size(102, 28);
             this.textBox_Tva.TabIndex = 339;
             this.textBox_Tva.TextChanged += new System.EventHandler(this.textBox_Tva_TextChanged);
             this.textBox_Tva.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Tva_KeyPress);
@@ -794,7 +783,7 @@
             // 
             // button_sndkz
             // 
-            this.button_sndkz.Location = new System.Drawing.Point(1799, 522);
+            this.button_sndkz.Location = new System.Drawing.Point(1787, 500);
             this.button_sndkz.Name = "button_sndkz";
             this.button_sndkz.Size = new System.Drawing.Size(59, 34);
             this.button_sndkz.TabIndex = 347;
@@ -804,7 +793,7 @@
             // 
             // button_sndbz
             // 
-            this.button_sndbz.Location = new System.Drawing.Point(1799, 578);
+            this.button_sndbz.Location = new System.Drawing.Point(1787, 556);
             this.button_sndbz.Name = "button_sndbz";
             this.button_sndbz.Size = new System.Drawing.Size(59, 34);
             this.button_sndbz.TabIndex = 348;
@@ -812,17 +801,9 @@
             this.button_sndbz.UseVisualStyleBackColor = true;
             this.button_sndbz.Click += new System.EventHandler(this.button_sndbz_Click);
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Location = new System.Drawing.Point(1229, 131);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(144, 648);
-            this.groupBox4.TabIndex = 24;
-            this.groupBox4.TabStop = false;
-            // 
             // textBox_oxy3
             // 
-            this.textBox_oxy3.Location = new System.Drawing.Point(1646, 328);
+            this.textBox_oxy3.Location = new System.Drawing.Point(1634, 304);
             this.textBox_oxy3.Name = "textBox_oxy3";
             this.textBox_oxy3.Size = new System.Drawing.Size(71, 28);
             this.textBox_oxy3.TabIndex = 349;
@@ -831,7 +812,7 @@
             // 
             // textBox_oxy4
             // 
-            this.textBox_oxy4.Location = new System.Drawing.Point(1644, 372);
+            this.textBox_oxy4.Location = new System.Drawing.Point(1632, 348);
             this.textBox_oxy4.Name = "textBox_oxy4";
             this.textBox_oxy4.Size = new System.Drawing.Size(71, 28);
             this.textBox_oxy4.TabIndex = 350;
@@ -840,7 +821,7 @@
             // 
             // textBox_oxy5
             // 
-            this.textBox_oxy5.Location = new System.Drawing.Point(1644, 416);
+            this.textBox_oxy5.Location = new System.Drawing.Point(1632, 392);
             this.textBox_oxy5.Name = "textBox_oxy5";
             this.textBox_oxy5.Size = new System.Drawing.Size(71, 28);
             this.textBox_oxy5.TabIndex = 351;
@@ -849,37 +830,37 @@
             // 
             // textBox_t3
             // 
-            this.textBox_t3.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_t3.Location = new System.Drawing.Point(1751, 328);
+            this.textBox_t3.ContextMenuStrip = this.contextMenuStrip_ti;
+            this.textBox_t3.Location = new System.Drawing.Point(1739, 304);
             this.textBox_t3.Name = "textBox_t3";
             this.textBox_t3.Size = new System.Drawing.Size(99, 28);
-            this.textBox_t3.TabIndex = 352;
+            this.textBox_t3.TabIndex = 333;
             this.textBox_t3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t3_KeyPress);
             // 
             // textBox_t4
             // 
-            this.textBox_t4.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_t4.Location = new System.Drawing.Point(1751, 372);
+            this.textBox_t4.ContextMenuStrip = this.contextMenuStrip_ti;
+            this.textBox_t4.Location = new System.Drawing.Point(1739, 348);
             this.textBox_t4.Name = "textBox_t4";
             this.textBox_t4.Size = new System.Drawing.Size(99, 28);
-            this.textBox_t4.TabIndex = 353;
+            this.textBox_t4.TabIndex = 334;
             this.textBox_t4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t4_KeyPress);
             // 
             // textBox_t5
             // 
-            this.textBox_t5.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_t5.Location = new System.Drawing.Point(1751, 416);
+            this.textBox_t5.ContextMenuStrip = this.contextMenuStrip_ti;
+            this.textBox_t5.Location = new System.Drawing.Point(1739, 392);
             this.textBox_t5.Name = "textBox_t5";
             this.textBox_t5.Size = new System.Drawing.Size(99, 28);
-            this.textBox_t5.TabIndex = 354;
+            this.textBox_t5.TabIndex = 335;
             this.textBox_t5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t5_KeyPress);
             // 
             // button_calkb
             // 
-            this.button_calkb.Location = new System.Drawing.Point(1673, 464);
+            this.button_calkb.Location = new System.Drawing.Point(1661, 443);
             this.button_calkb.Name = "button_calkb";
             this.button_calkb.Size = new System.Drawing.Size(116, 41);
-            this.button_calkb.TabIndex = 355;
+            this.button_calkb.TabIndex = 336;
             this.button_calkb.Text = "计算KB值";
             this.button_calkb.UseVisualStyleBackColor = true;
             this.button_calkb.Click += new System.EventHandler(this.button_calkb_Click);
@@ -893,16 +874,16 @@
             "50",
             "75",
             "95"});
-            this.comboBox_jd.Location = new System.Drawing.Point(1736, 753);
+            this.comboBox_jd.Location = new System.Drawing.Point(1719, 708);
             this.comboBox_jd.Name = "comboBox_jd";
             this.comboBox_jd.Size = new System.Drawing.Size(106, 26);
-            this.comboBox_jd.TabIndex = 357;
+            this.comboBox_jd.TabIndex = 340;
             this.comboBox_jd.Text = "20";
             // 
             // label_jd
             // 
             this.label_jd.AutoSize = true;
-            this.label_jd.Location = new System.Drawing.Point(1640, 794);
+            this.label_jd.Location = new System.Drawing.Point(1622, 754);
             this.label_jd.Name = "label_jd";
             this.label_jd.Size = new System.Drawing.Size(53, 18);
             this.label_jd.TabIndex = 356;
@@ -911,22 +892,37 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1640, 757);
+            this.label9.Location = new System.Drawing.Point(1621, 713);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(89, 18);
             this.label9.TabIndex = 358;
-            this.label9.Text = "标准气(%)";
+            this.label9.Text = "标准氧(%)";
             // 
             // timer5
             // 
             this.timer5.Interval = 3000;
             this.timer5.Tick += new System.EventHandler(this.timer5_Tick);
             // 
+            // contextMenuStrip_ti
+            // 
+            this.contextMenuStrip_ti.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.contextMenuStrip_ti.Name = "contextMenuStrip_tbTva";
+            this.contextMenuStrip_ti.Size = new System.Drawing.Size(171, 32);
+            this.contextMenuStrip_ti.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_ti_Opening);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(170, 28);
+            this.toolStripMenuItem2.Text = "使用接收值";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 913);
+            this.ClientSize = new System.Drawing.Size(1890, 913);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.comboBox_jd);
             this.Controls.Add(this.label_jd);
@@ -967,11 +963,9 @@
             this.Controls.Add(this.button_sendcmd);
             this.Controls.Add(this.comboBox_cmd);
             this.Controls.Add(this.button_review);
-            this.Controls.Add(this.textBox_HEX);
             this.Controls.Add(this.button_save);
             this.Controls.Add(this.checkBox_HEXshow);
             this.Controls.Add(this.comboBox4);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -1009,6 +1003,7 @@
             this.contextMenuStrip_tbTva.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_SA)).EndInit();
+            this.contextMenuStrip_ti.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1048,7 +1043,6 @@
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.CheckBox checkBox_HEXshow;
         private System.Windows.Forms.Button button_save;
-        private System.Windows.Forms.TextBox textBox_HEX;
         private System.Windows.Forms.Button button_review;
         private System.Windows.Forms.ComboBox comboBox_cmd;
         private System.Windows.Forms.Button button_sendcmd;
@@ -1084,7 +1078,6 @@
         private System.Windows.Forms.PictureBox pictureBox_SA;
         private System.Windows.Forms.Button button_sndkz;
         private System.Windows.Forms.Button button_sndbz;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TextBox textBox_oxy3;
         private System.Windows.Forms.TextBox textBox_oxy4;
         private System.Windows.Forms.TextBox textBox_oxy5;
@@ -1096,6 +1089,8 @@
         private System.Windows.Forms.Label label_jd;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Timer timer5;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_ti;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         
     }
 }
