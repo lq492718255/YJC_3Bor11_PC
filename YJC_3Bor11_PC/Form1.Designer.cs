@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
@@ -81,6 +81,8 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox_oxy1 = new System.Windows.Forms.TextBox();
             this.textBox_t1 = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip_ti = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip_tbTva = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox_oxy2 = new System.Windows.Forms.TextBox();
@@ -110,16 +112,14 @@
             this.label_jd = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.timer5 = new System.Windows.Forms.Timer(this.components);
-            this.contextMenuStrip_ti = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.contextMenuStrip_ti.SuspendLayout();
             this.contextMenuStrip_tbTva.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_SA)).BeginInit();
-            this.contextMenuStrip_ti.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialPort1
@@ -129,18 +129,18 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(94, 141);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Color = System.Drawing.Color.Red;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Color = System.Drawing.Color.Red;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(1124, 638);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -477,7 +477,7 @@
             this.comboBox_cmd.FormattingEnabled = true;
             this.comboBox_cmd.Items.AddRange(new object[] {
             "BB 00 B0",
-            "(电机)BB 01 B1",
+            "(电机) BB 01 B1",
             "(氧分压Tva) BB 02 B2",
             "(kb温度AD,UR) BB 03 B3",
             "(各个状态) BB 04 B4",
@@ -487,12 +487,12 @@
             "(11关气) AA 55 00 00 EA 01 00 00 00 00 00 16"});
             this.comboBox_cmd.Location = new System.Drawing.Point(994, 37);
             this.comboBox_cmd.Name = "comboBox_cmd";
-            this.comboBox_cmd.Size = new System.Drawing.Size(550, 30);
+            this.comboBox_cmd.Size = new System.Drawing.Size(596, 30);
             this.comboBox_cmd.TabIndex = 318;
             // 
             // button_sendcmd
             // 
-            this.button_sendcmd.Location = new System.Drawing.Point(1565, 33);
+            this.button_sendcmd.Location = new System.Drawing.Point(1608, 33);
             this.button_sendcmd.Name = "button_sendcmd";
             this.button_sendcmd.Size = new System.Drawing.Size(90, 41);
             this.button_sendcmd.TabIndex = 319;
@@ -505,7 +505,7 @@
             this.checkBox_HEXsend.AutoSize = true;
             this.checkBox_HEXsend.Checked = true;
             this.checkBox_HEXsend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_HEXsend.Location = new System.Drawing.Point(1686, 43);
+            this.checkBox_HEXsend.Location = new System.Drawing.Point(1717, 43);
             this.checkBox_HEXsend.Name = "checkBox_HEXsend";
             this.checkBox_HEXsend.Size = new System.Drawing.Size(97, 22);
             this.checkBox_HEXsend.TabIndex = 320;
@@ -631,7 +631,7 @@
             this.textBox_oxy1.Location = new System.Drawing.Point(1634, 216);
             this.textBox_oxy1.Name = "textBox_oxy1";
             this.textBox_oxy1.Size = new System.Drawing.Size(71, 28);
-            this.textBox_oxy1.TabIndex = 333;
+            this.textBox_oxy1.TabIndex = 221;
             this.textBox_oxy1.Text = "20";
             this.textBox_oxy1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_oxy1_KeyPress);
             // 
@@ -643,6 +643,21 @@
             this.textBox_t1.Size = new System.Drawing.Size(99, 28);
             this.textBox_t1.TabIndex = 331;
             this.textBox_t1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_t1_KeyPress);
+            // 
+            // contextMenuStrip_ti
+            // 
+            this.contextMenuStrip_ti.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.contextMenuStrip_ti.Name = "contextMenuStrip_tbTva";
+            this.contextMenuStrip_ti.Size = new System.Drawing.Size(171, 32);
+            this.contextMenuStrip_ti.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_ti_Opening);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(170, 28);
+            this.toolStripMenuItem2.Text = "使用接收值";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // contextMenuStrip_tbTva
             // 
@@ -663,7 +678,7 @@
             this.textBox_oxy2.Location = new System.Drawing.Point(1634, 260);
             this.textBox_oxy2.Name = "textBox_oxy2";
             this.textBox_oxy2.Size = new System.Drawing.Size(71, 28);
-            this.textBox_oxy2.TabIndex = 335;
+            this.textBox_oxy2.TabIndex = 222;
             this.textBox_oxy2.Text = "20.9";
             this.textBox_oxy2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_oxy2_KeyPress);
             // 
@@ -806,7 +821,7 @@
             this.textBox_oxy3.Location = new System.Drawing.Point(1634, 304);
             this.textBox_oxy3.Name = "textBox_oxy3";
             this.textBox_oxy3.Size = new System.Drawing.Size(71, 28);
-            this.textBox_oxy3.TabIndex = 349;
+            this.textBox_oxy3.TabIndex = 223;
             this.textBox_oxy3.Text = "50";
             this.textBox_oxy3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_oxy3_KeyPress);
             // 
@@ -815,7 +830,7 @@
             this.textBox_oxy4.Location = new System.Drawing.Point(1632, 348);
             this.textBox_oxy4.Name = "textBox_oxy4";
             this.textBox_oxy4.Size = new System.Drawing.Size(71, 28);
-            this.textBox_oxy4.TabIndex = 350;
+            this.textBox_oxy4.TabIndex = 224;
             this.textBox_oxy4.Text = "75";
             this.textBox_oxy4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_oxy4_KeyPress);
             // 
@@ -824,7 +839,7 @@
             this.textBox_oxy5.Location = new System.Drawing.Point(1632, 392);
             this.textBox_oxy5.Name = "textBox_oxy5";
             this.textBox_oxy5.Size = new System.Drawing.Size(71, 28);
-            this.textBox_oxy5.TabIndex = 351;
+            this.textBox_oxy5.TabIndex = 225;
             this.textBox_oxy5.Text = "95";
             this.textBox_oxy5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_oxy5_KeyPress);
             // 
@@ -879,6 +894,8 @@
             this.comboBox_jd.Size = new System.Drawing.Size(106, 26);
             this.comboBox_jd.TabIndex = 340;
             this.comboBox_jd.Text = "20";
+            this.comboBox_jd.TextChanged += new System.EventHandler(this.comboBox_jd_TextChanged);
+            this.comboBox_jd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox_jd_KeyPress);
             // 
             // label_jd
             // 
@@ -902,21 +919,6 @@
             // 
             this.timer5.Interval = 3000;
             this.timer5.Tick += new System.EventHandler(this.timer5_Tick);
-            // 
-            // contextMenuStrip_ti
-            // 
-            this.contextMenuStrip_ti.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2});
-            this.contextMenuStrip_ti.Name = "contextMenuStrip_tbTva";
-            this.contextMenuStrip_ti.Size = new System.Drawing.Size(171, 32);
-            this.contextMenuStrip_ti.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_ti_Opening);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(170, 28);
-            this.toolStripMenuItem2.Text = "使用接收值";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // Form1
             // 
@@ -1000,10 +1002,10 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.contextMenuStrip_ti.ResumeLayout(false);
             this.contextMenuStrip_tbTva.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_SA)).EndInit();
-            this.contextMenuStrip_ti.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -86,6 +86,7 @@ namespace YJC_3Bor11_PC
                 WritePrivateProfileString("KB参数", "k", "0", iniPath);
                 WritePrivateProfileString("KB参数", "b", "0", iniPath);
                 WritePrivateProfileString("接收参数", "MSpd", "", iniPath);
+                WritePrivateProfileString("接收参数", "MavSpd", "", iniPath);
                 WritePrivateProfileString("接收参数", "PWM", "", iniPath);
                 WritePrivateProfileString("接收参数", "DSpd", "", iniPath);
                 WritePrivateProfileString("接收参数", "mtVol", "", iniPath);
@@ -162,8 +163,8 @@ namespace YJC_3Bor11_PC
             this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Series.Clear();
             //设置图表显示样式
-            chart1.ChartAreas[0].AxisY.Minimum = -600;
-            chart1.ChartAreas[0].AxisY.Maximum = 500;
+            chart1.ChartAreas[0].AxisY.Minimum = -100;
+            chart1.ChartAreas[0].AxisY.Maximum = 1500;
             //chart1.ChartAreas[0].AxisX.ScaleView.Size = xSize;
             chart1.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.NotSet;
             chart1.ChartAreas[0].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.NotSet; //Y轴无格子线
@@ -245,6 +246,8 @@ namespace YJC_3Bor11_PC
                         hexstr += string.Format("{0:X2}", buf[i]) + " ";
                     this.BeginInvoke((MethodInvoker)delegate
                         {
+                            richTextBox_HEX.SelectionColor = Color.Black;
+                            richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                             richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n"));
                             richTextBox_HEX.SelectionColor = Color.Green;
                             richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
@@ -258,8 +261,12 @@ namespace YJC_3Bor11_PC
                         string strbufi = Encoding.ASCII.GetString(new byte[] { buf[i] }, 0, 1);                        
                         this.BeginInvoke((MethodInvoker)delegate //挨个字符显示
                             {
-                                if ((nowrects - prerects).TotalMilliseconds > 300)
+                                if ((nowrects - prerects).TotalMilliseconds > 200)
+                                {
+                                    richTextBox_HEX.SelectionColor = Color.Black;
+                                    richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                                     richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n"));
+                                }
                                 richTextBox_HEX.SelectionColor = Color.Green;
                                 richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
                                 if (strbufi != "\r")richTextBox_HEX.AppendText(strbufi);
@@ -1224,7 +1231,8 @@ namespace YJC_3Bor11_PC
                 {
                     byte[] cmdbyteArray = cmdstr.Split(' ').Select(x => Convert.ToByte(x, 16)).ToArray();
                     serialPort1.Write(cmdbyteArray, 0, cmdbyteArray.Length);
-                    //textBox_HEX.AppendText("\r\n" + DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n") + cmdstr + "\r\n");
+                    richTextBox_HEX.SelectionColor = Color.Black;
+                    richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                     richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
                     richTextBox_HEX.SelectionColor = Color.Red;
                     richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
@@ -1401,8 +1409,8 @@ namespace YJC_3Bor11_PC
                 double[] arrY = oxylist.ToArray();
                 double[] b_k = MultiLine(arrX, arrY, oxylist.Count, 1);
                 kz = b_k[1]; bz = b_k[0];
-                textBox_bz.Text = b_k[0].ToString("F11");
-                textBox_kz.Text = b_k[1].ToString("F11");
+                textBox_bz.Text = b_k[0].ToString("F08");
+                textBox_kz.Text = b_k[1].ToString("F08");
             }
             else
                 MessageBox.Show("填入至少两组氧浓度与Tva");
@@ -1480,7 +1488,7 @@ namespace YJC_3Bor11_PC
         private void button_sndkz_Click(object sender, EventArgs e) //发送修改K值
         {
             DialogResult msgboxResult;
-            msgboxResult = MessageBox.Show("确定要修改K值?" , "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            msgboxResult = MessageBox.Show("只能在开机60s之内改K\r\n确定要修改K值?" , "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
             if (msgboxResult == DialogResult.No)
                 return;
 
@@ -1489,6 +1497,12 @@ namespace YJC_3Bor11_PC
             if (serialPort1.IsOpen)
             {
                 serialPort1.Write(ukz_arr, 0, ukz_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(ukz_arr).Replace("-"," ") + "\r\n");
             }
             else
                 MessageBox.Show("串口错误");
@@ -1496,7 +1510,7 @@ namespace YJC_3Bor11_PC
         private void button_sndbz_Click(object sender, EventArgs e) //发送修改B值
         {
             DialogResult msgboxResult;
-            msgboxResult = MessageBox.Show("确定要修改B值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            msgboxResult = MessageBox.Show("只能在开机60s之内改B\r\n确定要修改B值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
             if (msgboxResult == DialogResult.No)
                 return;
             ulong ubz = BitConverter.ToUInt64(BitConverter.GetBytes(bz), 0);
@@ -1504,6 +1518,12 @@ namespace YJC_3Bor11_PC
             if (serialPort1.IsOpen)
             {
                 serialPort1.Write(ubz_arr, 0, ubz_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(ubz_arr).Replace("-", " ") + "\r\n");
             }
             else
                 MessageBox.Show("串口错误");
@@ -1515,6 +1535,29 @@ namespace YJC_3Bor11_PC
         private void textBox_Tva_TextChanged(object sender, EventArgs e) //实时Tva改变后自动更新氧分压与精度
         {
             caloxy();
+            caljd();
+        }
+        private void comboBox_jd_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            if (e.KeyChar == 13)//回车
+            {
+                label1.Focus();
+                cb.BackColor = Color.White;
+                return;
+            }
+            e.Handled = true;
+            if (e.KeyChar == 8)
+                e.Handled = false;
+            if ("0123456789".IndexOf(e.KeyChar) >= 0 )
+                e.Handled = false;                  
+            if (e.KeyChar == 46 && Regex.IsMatch(cb.Text.Substring(0, cb.SelectionStart).Replace("-", ""), @"^\d+$") && !cb.Text.Substring(0, cb.SelectionStart).Contains(".") && !cb.Text.Substring(cb.SelectionStart + cb.SelectionLength).Contains("."))
+                e.Handled = false;  //小数点之前必须已经有数字,且未被选中部分不能已经存在点了
+            if (e.KeyChar == '-')
+                e.Handled = true;//不能是负号
+        }
+        private void comboBox_jd_TextChanged(object sender, EventArgs e)
+        {
             caljd();
         }
         string source_tb;//哪个textBox点击了右键
@@ -1710,6 +1753,10 @@ namespace YJC_3Bor11_PC
             }
         }
         #endregion
+
+        
+
+        
 
         
 
