@@ -48,6 +48,10 @@ namespace YJC_3Bor11_PC
         static object lockObj = new object();
         int LimtDrawCnt = 999999999; //曲线图可画点数上限
 
+        double kz = 0, bz = 0; //KB值
+        double recOxy = 0; //串口接收的氧分压值
+        TimeSpan prerects = DateTime.Now - DateTime.MinValue; //上次串口接收时间
+
         [DllImport("kernel32")]
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32", EntryPoint = "GetPrivateProfileString")]
@@ -134,7 +138,6 @@ namespace YJC_3Bor11_PC
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
             
             comboBox1GetComNum();
             if (comboBox1.Items.Count > 0)
@@ -230,7 +233,6 @@ namespace YJC_3Bor11_PC
             #endregion
         }
 
-        TimeSpan prerects=DateTime.Now-DateTime.MinValue; 
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             try
@@ -238,7 +240,7 @@ namespace YJC_3Bor11_PC
                 int rbn = serialPort1.BytesToRead;
                 byte[] buf = new byte[rbn];
                 serialPort1.Read(buf, 0, rbn);
-                TimeSpan nowrects = DateTime.Now-DateTime.MinValue; 
+                TimeSpan nowrects = DateTime.Now-DateTime.MinValue; //本次接收时间
                 if (checkBox_HEXshow.Checked == true)
                 {
                     string hexstr = string.Empty;
@@ -261,12 +263,13 @@ namespace YJC_3Bor11_PC
                         string strbufi = Encoding.ASCII.GetString(new byte[] { buf[i] }, 0, 1);                        
                         this.BeginInvoke((MethodInvoker)delegate //挨个字符显示
                             {
-                                if ((nowrects - prerects).TotalMilliseconds > 200)
+                                if ((nowrects - prerects).TotalMilliseconds > 150)
                                 {
                                     richTextBox_HEX.SelectionColor = Color.Black;
                                     richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                                     richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n"));
                                 }
+                                prerects = nowrects;
                                 richTextBox_HEX.SelectionColor = Color.Green;
                                 richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
                                 if (strbufi != "\r")richTextBox_HEX.AppendText(strbufi);
@@ -283,23 +286,25 @@ namespace YJC_3Bor11_PC
                                     //richTextBox_HEX.SelectionColor = Color.Green;
                                     //richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
                                     //richTextBox_HEX.AppendText(recstr + "\r\n");
-                                    if (toolStripMenuItem1.Text == "手动输入" && recstr.StartsWith("Tva="))
-                                        textBox_Tva.Text=Convert.ToInt32(recstr.Replace("Tva=", "0"), 16).ToString("X2");
                                     if (recstr.StartsWith("SALED=ON")) pictureBox_SA.BackColor = Color.LawnGreen;
                                     if (recstr.StartsWith("SALED=OFF"))pictureBox_SA.BackColor = Color.Gray;
                                     if (recstr.StartsWith("OALED=ON")) pictureBox_OA.BackColor = Color.Red;
-                                    if (recstr.StartsWith("OALED=OFF")) pictureBox_OA.BackColor = Color.Gray;
+                                    if (recstr.StartsWith("OALED=OFF")) pictureBox_OA.BackColor = Color.Gray;                                    
                                     if (recstr.StartsWith("Tva=") && toolStripMenuItem1.Text == "手动输入") textBox_Tva.Text = recstr.Replace("Tva=", "");
-                                    if (recstr.StartsWith("Tva=") && source_tb!=null && source_tb.StartsWith("textBox_t") && getCurrentTva == true)
+                                    if (recstr.StartsWith("Tva=") && source_ti!=null && source_ti.StartsWith("textBox_t") && getCurrentTva == true)
                                     {
-                                        TextBox tb_ti = (TextBox)this.Controls.Find(source_tb, true)[0];
+                                        TextBox tb_ti = (TextBox)this.Controls.Find(source_ti, true)[0];
                                         tb_ti.Text = recstr.Replace("Tva=", "");
-                                        source_tb = ""; 
+                                        source_ti = ""; 
                                         getCurrentTva = false;
                                     }
+                                    if (recstr.StartsWith("Oxy=") && checkBox_jd_OxyOrTva.Checked == true)
+                                    {
+                                        double.TryParse(recstr.Replace("Oxy=", ""),out recOxy);
+                                        caljd();
+                                    }
                                 });
-
-                            #region 字符接收 //不使用checkBox_HEX时此段直接放置在serialPort1_DataReceived内
+                            #region 字符接收 
                             DateTime datetimeNow = DateTime.Now; //DateTime.FromOADate(double OLEdatetime)                
                             XYvalue xyval_recone; //本次接收数据点
                             xyval_recone.Xval = datetimeNow;
@@ -314,8 +319,7 @@ namespace YJC_3Bor11_PC
                                 }
                             #endregion
                         }
-                    }
-                    prerects = nowrects;
+                    }                    
                 }
             }
             catch (Exception err)
@@ -750,7 +754,7 @@ namespace YJC_3Bor11_PC
             catch (Exception err) { }
             finally
             {
-                WritePrivateProfileString("KB参数", "dqy", numericUpDown1.Value.ToString(), iniPath);
+                WritePrivateProfileString("KB参数", "dqy", numericUpDown1.Value.ToString("F01"), iniPath);
                 //drawChartThread.Abort();
                 System.Environment.Exit(0);
             }
@@ -847,11 +851,12 @@ namespace YJC_3Bor11_PC
                     {
                         if (FirstDatadt == DateTime.MinValue) //收到了第一个数据点的时间记在FirstDatadt
                             FirstDatadt = XYval_list.First().Xval;
-                        int ydata;
+                        UInt32 ydata;
                         if(XYval_list.First().Yval.StartsWith("Tva"))
-                            ydata = Convert.ToInt32(XYval_list.First().Yval.Replace("Tva=", "") == "" ? "0" : XYval_list.First().Yval.Replace("Tva=", ""), 16);
+                            //ydata = Convert.ToInt32(XYval_list.First().Yval.Replace("Tva=", "") == "" ? "0" : XYval_list.First().Yval.Replace("Tva=", ""), 16); //十六进制
+                            ydata = Convert.ToUInt32(XYval_list.First().Yval.Replace("Tva=", "") == "" ? "0" : XYval_list.First().Yval.Replace("Tva=", ""), XYval_list.First().Yval.Replace("Tva=", "").StartsWith("0x")?16:10);
                         else
-                            int.TryParse(XYval_list.First().Yval.Replace(param + "=", ""), out ydata); 
+                            UInt32.TryParse(XYval_list.First().Yval.Replace(param + "=", ""), out ydata); 
 
                         if (chart1.Series.Count == 0) //无图则直接添加
                         {
@@ -1312,7 +1317,7 @@ namespace YJC_3Bor11_PC
         }
 
         #region 计算KB值,实际氧分压,精度等
-        private void tb1_KeyPress(object sender, KeyPressEventArgs e)
+        private void tb1_KeyPress(object sender, KeyPressEventArgs e) //允许正小数
         {
             //Regex.IsMatch(text.Replace("-", ""), @"^\d+$") //匹配是否是数字
             TextBox tb = sender as TextBox;
@@ -1334,14 +1339,42 @@ namespace YJC_3Bor11_PC
             if (e.KeyChar == '-')
                 e.Handled = true;//不能是负号
         }
-        private void tb2_KeyPress(object sender, KeyPressEventArgs e)
+        private void tb2_KeyPress(object sender, KeyPressEventArgs e) //允许0x开头的十六进制数或正整数
         {
+            TextBox tb = sender as TextBox;
             if (e.KeyChar == 13)
             {
                 label1.Focus();
                 return;
             }
             e.Handled = "0123456789ABCDEF".IndexOf(char.ToUpper(e.KeyChar)) < 0;
+            e.KeyChar = char.ToUpper(e.KeyChar);
+            if (e.KeyChar == 8)
+                e.Handled = false; 
+            if ((e.KeyChar == 'x' || e.KeyChar == 'X') && tb.Text.Substring(0,1) == "0" && tb.SelectionStart == 1) //x之前必须时0且必须在第二位
+            {
+                e.KeyChar = char.ToLower(e.KeyChar);
+                e.Handled = false;
+            }
+            if ("ABCDEF".Contains(char.ToUpper(e.KeyChar)) )
+            {
+                if (tb.Text.Length >= 2 && tb.Text.Substring(0, 2) == "0x")
+                    e.Handled = false;
+                else
+                {
+                    e.Handled = true;
+                    MessageBox.Show("十六进制Tva值必须以0x开头");
+                }
+            }
+        }
+        private void tb3_KeyPress(object sender, KeyPressEventArgs e) //只允许正整数
+        {
+            if (e.KeyChar == 13)
+            {
+                label1.Focus();
+                return;
+            }
+            e.Handled = "0123456789".IndexOf(char.ToUpper(e.KeyChar)) < 0;
             e.KeyChar = char.ToUpper(e.KeyChar);
             if (e.KeyChar == 8)
                 e.Handled = false;
@@ -1368,25 +1401,24 @@ namespace YJC_3Bor11_PC
         }
         private void textBox_t1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            tb2_KeyPress(sender, e);
+            tb2_KeyPress(sender, e); 
         }
         private void textBox_t2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            tb2_KeyPress(sender, e);
+            tb2_KeyPress(sender, e); 
         }
         private void textBox_t3_KeyPress(object sender, KeyPressEventArgs e)
         {
-            tb2_KeyPress(sender, e);
+            tb2_KeyPress(sender, e); 
         }
         private void textBox_t4_KeyPress(object sender, KeyPressEventArgs e)
         {
-            tb2_KeyPress(sender, e);
+            tb2_KeyPress(sender, e); 
         }
         private void textBox_t5_KeyPress(object sender, KeyPressEventArgs e)
         {
-            tb2_KeyPress(sender, e);
+            tb2_KeyPress(sender, e); 
         }
-        double kz = 0, bz = 0;
         private void button_calkb_Click(object sender, EventArgs e)
         {
             double dqy = (double)numericUpDown1.Value;
@@ -1400,7 +1432,8 @@ namespace YJC_3Bor11_PC
                 if (double.TryParse(tb_oxyi.Text, out oxyi) && tb_ti.Text != "")
                 {
                     oxylist.Add(dqy * oxyi*0.01);
-                    tlist.Add(Convert.ToInt32(tb_ti.Text, 16));
+                    //tlist.Add(Convert.ToInt32(tb_ti.Text, 16)); //十六进制
+                    tlist.Add(Convert.ToUInt32(tb_ti.Text, tb_ti.Text.StartsWith("0x")?16:10));
                 }
             }
             if (oxylist.Count >= 2)
@@ -1417,17 +1450,47 @@ namespace YJC_3Bor11_PC
         }
         private void caloxy()
         {
-            int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16);
-            label_oxy.Text = "实时氧分压= " + (Tva * kz + bz).ToString("F02") + "kpa";
+            //int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16); //十六进制
+            UInt32 Tva = Convert.ToUInt32(textBox_Tva.Text == "" ? "0":textBox_Tva.Text, textBox_Tva.Text.StartsWith("0x") ? 16 : 10);
+            label_oxy.Text = "氧分压=Tva*K+B= " + (Tva * kz + bz).ToString("F01") + "kpa";
         }
         private void caljd()
         {
-            int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16);
-            try
+            if (checkBox_jd_OxyOrTva.Checked == false) //非自动计算精度时用textBox_Tva*K+B
             {
-                label_jd.Text = "精度= " + ((((Tva * kz + bz) - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text)*0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text)*0.01) )*100).ToString("F02") + "%";
+                //int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16);//十六进制
+                UInt32 Tva = Convert.ToUInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, textBox_Tva.Text.StartsWith("0x") ? 16 : 10);
+                try
+                {
+                    label_jd.Text = "=(Tva*K+B)-" + numericUpDown1.Value.ToString("F01") + "*\r\n\r\n= "
+                        + ((((Tva * kz + bz) - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01)) * 100).ToString("F01") + "%";
+                }
+                catch (Exception err) { }
             }
-            catch (Exception err) { }
+            else if (checkBox_jd_OxyOrTva.Checked == true) //自动计算精度时串口接收的oxy
+            {
+                try
+                {
+                    label_jd.Text = "=  Oxy - " + numericUpDown1.Value.ToString("F01") + "*\r\n\r\n= "
+                        + (((recOxy*0.1 - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01)) * 100).ToString("F01") + "%";
+                }
+                catch (Exception err) { }
+            }
+        }
+        private void checkBox_autojd_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_jd_OxyOrTva.Checked == false) //非自动计算精度时用textBox_Tva*K+B
+            {
+                try
+                { label_jd.Text = "=Tva*K+B-" + numericUpDown1.Value.ToString("F01") + "*\r\n\r\n= %"; }
+                catch (Exception err) { }
+            }
+            else if (checkBox_jd_OxyOrTva.Checked == true) //自动计算精度时串口接收的oxy
+            {
+                try
+                { label_jd.Text = "=  Oxy - " + numericUpDown1.Value.ToString("F01") + "*\r\n\r\n= %"; }
+                catch (Exception err) { }
+            }
         }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) //大气压值改变后自动更新精度
         {
@@ -1530,7 +1593,7 @@ namespace YJC_3Bor11_PC
         }
         private void textBox_Tva_KeyPress(object sender, KeyPressEventArgs e)
         {
-            tb2_KeyPress(sender, e);
+            tb2_KeyPress(sender, e); 
         }              
         private void textBox_Tva_TextChanged(object sender, EventArgs e) //实时Tva改变后自动更新氧分压与精度
         {
@@ -1560,13 +1623,13 @@ namespace YJC_3Bor11_PC
         {
             caljd();
         }
-        string source_tb;//哪个textBox点击了右键
+        string source_ti;//哪个textBox_ti点击了右键
         bool getCurrentTva = false; //当前Tva值填入textBox_t1-t5
         private void contextMenuStrip_ti_Opening(object sender, CancelEventArgs e)
         {
-            source_tb = (sender as ContextMenuStrip).SourceControl.Name;
+            source_ti = (sender as ContextMenuStrip).SourceControl.Name;
         }
-        private void toolStripMenuItem1_Click(object sender, EventArgs e) //右键切换Tval来源
+        private void toolStripMenuItem1_Click(object sender, EventArgs e) //textBox_Tva右键切换来源
         {            
                 if (toolStripMenuItem1.Text == "使用接收值")
                 {
@@ -1583,13 +1646,16 @@ namespace YJC_3Bor11_PC
 
                 }
         }
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e) //textBox_ti右键
         {
+            timer5.Stop();
             getCurrentTva = true;
+            timer5.Start();
         }
         private void timer5_Tick(object sender, EventArgs e) //右击textBox_t1-t5超时放弃获取tva
         {
-            getCurrentTva = false;
+            getCurrentTva = false; 
+            timer5.Stop();
         }
         ///<summary>
         ///用最小二乘法拟合二元多次曲线
@@ -1687,12 +1753,12 @@ namespace YJC_3Bor11_PC
 
             return x;
         }
-
         #endregion
 
         #region 模拟从片采集到的氧分压值kpa生成Tval向主片发送
         private void checkBox_sndOXY_CheckedChanged(object sender, EventArgs e)
         {
+            return;
             if (checkBox_sndOXY.Checked == true)
             {
                 try
@@ -1728,12 +1794,10 @@ namespace YJC_3Bor11_PC
                 }
             }
         }
-
         private void textBox_sndOXY_KeyPress(object sender, KeyPressEventArgs e)
         {
             tb1_KeyPress(sender, e);
-        }
-        
+        }  
         private void timer4_Tick(object sender, EventArgs e) //定时模拟从片发送OXY
         {
             if (textBox_sndOXY.Text == "") return;
@@ -1753,6 +1817,13 @@ namespace YJC_3Bor11_PC
             }
         }
         #endregion
+
+        private void comboBox_cmd_DropDownClosed(object sender, EventArgs e)
+        {
+            label1.Focus();
+        }
+
+        
 
         
 

@@ -112,6 +112,7 @@
             this.label_jd = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.timer5 = new System.Windows.Forms.Timer(this.components);
+            this.checkBox_jd_OxyOrTva = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -476,23 +477,24 @@
             this.comboBox_cmd.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox_cmd.FormattingEnabled = true;
             this.comboBox_cmd.Items.AddRange(new object[] {
-            "BB 00 B0",
-            "(电机) BB 01 B1",
-            "(氧分压Tva) BB 02 B2",
+            "(422通讯) BB 00 B0",
+            "(电机参数) BB 01 B1",
+            "(氧分压Tva Oxy) BB 02 B2",
             "(kb温度AD,UR) BB 03 B3",
             "(各个状态) BB 04 B4",
             "(3B通气) 55 AA 01 00 00 00 00 00 00 00 00 00",
             "(3B关气) 55 AA 00 00 00 00 00 00 00 00 00 01",
             "(11通气) AA 55 00 00 62 02 00 00 00 00 00 9D",
             "(11关气) AA 55 00 00 EA 01 00 00 00 00 00 16"});
-            this.comboBox_cmd.Location = new System.Drawing.Point(994, 37);
+            this.comboBox_cmd.Location = new System.Drawing.Point(994, 41);
             this.comboBox_cmd.Name = "comboBox_cmd";
             this.comboBox_cmd.Size = new System.Drawing.Size(596, 30);
             this.comboBox_cmd.TabIndex = 318;
+            this.comboBox_cmd.DropDownClosed += new System.EventHandler(this.comboBox_cmd_DropDownClosed);
             // 
             // button_sendcmd
             // 
-            this.button_sendcmd.Location = new System.Drawing.Point(1608, 33);
+            this.button_sendcmd.Location = new System.Drawing.Point(1608, 37);
             this.button_sendcmd.Name = "button_sendcmd";
             this.button_sendcmd.Size = new System.Drawing.Size(90, 41);
             this.button_sendcmd.TabIndex = 319;
@@ -505,7 +507,7 @@
             this.checkBox_HEXsend.AutoSize = true;
             this.checkBox_HEXsend.Checked = true;
             this.checkBox_HEXsend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_HEXsend.Location = new System.Drawing.Point(1717, 43);
+            this.checkBox_HEXsend.Location = new System.Drawing.Point(1718, 45);
             this.checkBox_HEXsend.Name = "checkBox_HEXsend";
             this.checkBox_HEXsend.Size = new System.Drawing.Size(97, 22);
             this.checkBox_HEXsend.TabIndex = 320;
@@ -558,11 +560,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1731, 190);
+            this.label8.Location = new System.Drawing.Point(1737, 190);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(125, 18);
+            this.label8.Size = new System.Drawing.Size(89, 18);
             this.label8.TabIndex = 325;
-            this.label8.Text = "Tva标定值(0x)";
+            this.label8.Text = "Tva标定值";
             // 
             // label11
             // 
@@ -585,20 +587,20 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(1620, 625);
+            this.label13.Location = new System.Drawing.Point(1620, 616);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(116, 18);
+            this.label13.Size = new System.Drawing.Size(53, 18);
             this.label13.TabIndex = 330;
-            this.label13.Text = "Tva实时值:0x";
+            this.label13.Text = "Tva值";
             // 
             // label_oxy
             // 
             this.label_oxy.AutoSize = true;
-            this.label_oxy.Location = new System.Drawing.Point(1621, 670);
+            this.label_oxy.Location = new System.Drawing.Point(1621, 659);
             this.label_oxy.Name = "label_oxy";
-            this.label_oxy.Size = new System.Drawing.Size(143, 18);
+            this.label_oxy.Size = new System.Drawing.Size(107, 18);
             this.label_oxy.TabIndex = 331;
-            this.label_oxy.Text = "实时氧分压(kpa)";
+            this.label_oxy.Text = "氧分压(kpa)";
             // 
             // numericUpDown1
             // 
@@ -712,7 +714,7 @@
             // textBox_Tva
             // 
             this.textBox_Tva.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_Tva.Location = new System.Drawing.Point(1740, 619);
+            this.textBox_Tva.Location = new System.Drawing.Point(1677, 611);
             this.textBox_Tva.Name = "textBox_Tva";
             this.textBox_Tva.Size = new System.Drawing.Size(102, 28);
             this.textBox_Tva.TabIndex = 339;
@@ -889,9 +891,9 @@
             "50",
             "75",
             "95"});
-            this.comboBox_jd.Location = new System.Drawing.Point(1719, 708);
+            this.comboBox_jd.Location = new System.Drawing.Point(1760, 739);
             this.comboBox_jd.Name = "comboBox_jd";
-            this.comboBox_jd.Size = new System.Drawing.Size(106, 26);
+            this.comboBox_jd.Size = new System.Drawing.Size(80, 26);
             this.comboBox_jd.TabIndex = 340;
             this.comboBox_jd.Text = "20";
             this.comboBox_jd.TextChanged += new System.EventHandler(this.comboBox_jd_TextChanged);
@@ -900,7 +902,7 @@
             // label_jd
             // 
             this.label_jd.AutoSize = true;
-            this.label_jd.Location = new System.Drawing.Point(1622, 754);
+            this.label_jd.Location = new System.Drawing.Point(1616, 745);
             this.label_jd.Name = "label_jd";
             this.label_jd.Size = new System.Drawing.Size(53, 18);
             this.label_jd.TabIndex = 356;
@@ -909,22 +911,36 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1621, 713);
+            this.label9.Location = new System.Drawing.Point(1843, 744);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(89, 18);
+            this.label9.Size = new System.Drawing.Size(35, 18);
             this.label9.TabIndex = 358;
-            this.label9.Text = "标准氧(%)";
+            this.label9.Text = "(%)";
             // 
             // timer5
             // 
             this.timer5.Interval = 3000;
             this.timer5.Tick += new System.EventHandler(this.timer5_Tick);
             // 
+            // checkBox_jd_OxyOrTva
+            // 
+            this.checkBox_jd_OxyOrTva.AutoSize = true;
+            this.checkBox_jd_OxyOrTva.Checked = true;
+            this.checkBox_jd_OxyOrTva.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_jd_OxyOrTva.Location = new System.Drawing.Point(1623, 711);
+            this.checkBox_jd_OxyOrTva.Name = "checkBox_jd_OxyOrTva";
+            this.checkBox_jd_OxyOrTva.Size = new System.Drawing.Size(205, 22);
+            this.checkBox_jd_OxyOrTva.TabIndex = 359;
+            this.checkBox_jd_OxyOrTva.Text = "选择Oxy/Tva计算精度";
+            this.checkBox_jd_OxyOrTva.UseVisualStyleBackColor = true;
+            this.checkBox_jd_OxyOrTva.CheckedChanged += new System.EventHandler(this.checkBox_autojd_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1890, 913);
+            this.Controls.Add(this.checkBox_jd_OxyOrTva);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.comboBox_jd);
             this.Controls.Add(this.label_jd);
@@ -1093,6 +1109,7 @@
         private System.Windows.Forms.Timer timer5;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_ti;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.CheckBox checkBox_jd_OxyOrTva;
         
     }
 }
