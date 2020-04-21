@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
@@ -113,6 +113,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.checkBox_jd_OxyOrTva = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox_pz = new System.Windows.Forms.TextBox();
+            this.button_sndpz = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -130,18 +133,18 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(94, 141);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Color = System.Drawing.Color.Red;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Color = System.Drawing.Color.Red;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(1124, 638);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -587,7 +590,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(1620, 616);
+            this.label13.Location = new System.Drawing.Point(1620, 665);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 18);
             this.label13.TabIndex = 330;
@@ -596,7 +599,7 @@
             // label_oxy
             // 
             this.label_oxy.AutoSize = true;
-            this.label_oxy.Location = new System.Drawing.Point(1621, 659);
+            this.label_oxy.Location = new System.Drawing.Point(1621, 708);
             this.label_oxy.Name = "label_oxy";
             this.label_oxy.Size = new System.Drawing.Size(107, 18);
             this.label_oxy.TabIndex = 331;
@@ -714,7 +717,7 @@
             // textBox_Tva
             // 
             this.textBox_Tva.ContextMenuStrip = this.contextMenuStrip_tbTva;
-            this.textBox_Tva.Location = new System.Drawing.Point(1677, 611);
+            this.textBox_Tva.Location = new System.Drawing.Point(1677, 660);
             this.textBox_Tva.Name = "textBox_Tva";
             this.textBox_Tva.Size = new System.Drawing.Size(102, 28);
             this.textBox_Tva.TabIndex = 339;
@@ -891,7 +894,7 @@
             "50",
             "75",
             "95"});
-            this.comboBox_jd.Location = new System.Drawing.Point(1760, 739);
+            this.comboBox_jd.Location = new System.Drawing.Point(1760, 788);
             this.comboBox_jd.Name = "comboBox_jd";
             this.comboBox_jd.Size = new System.Drawing.Size(80, 26);
             this.comboBox_jd.TabIndex = 340;
@@ -902,7 +905,7 @@
             // label_jd
             // 
             this.label_jd.AutoSize = true;
-            this.label_jd.Location = new System.Drawing.Point(1616, 745);
+            this.label_jd.Location = new System.Drawing.Point(1616, 794);
             this.label_jd.Name = "label_jd";
             this.label_jd.Size = new System.Drawing.Size(53, 18);
             this.label_jd.TabIndex = 356;
@@ -911,7 +914,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1843, 744);
+            this.label9.Location = new System.Drawing.Point(1843, 793);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 18);
             this.label9.TabIndex = 358;
@@ -927,7 +930,7 @@
             this.checkBox_jd_OxyOrTva.AutoSize = true;
             this.checkBox_jd_OxyOrTva.Checked = true;
             this.checkBox_jd_OxyOrTva.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_jd_OxyOrTva.Location = new System.Drawing.Point(1623, 711);
+            this.checkBox_jd_OxyOrTva.Location = new System.Drawing.Point(1623, 760);
             this.checkBox_jd_OxyOrTva.Name = "checkBox_jd_OxyOrTva";
             this.checkBox_jd_OxyOrTva.Size = new System.Drawing.Size(205, 22);
             this.checkBox_jd_OxyOrTva.TabIndex = 359;
@@ -935,11 +938,41 @@
             this.checkBox_jd_OxyOrTva.UseVisualStyleBackColor = true;
             this.checkBox_jd_OxyOrTva.CheckedChanged += new System.EventHandler(this.checkBox_autojd_CheckedChanged);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(1621, 615);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(35, 18);
+            this.label10.TabIndex = 360;
+            this.label10.Text = "P值";
+            // 
+            // textBox_pz
+            // 
+            this.textBox_pz.Location = new System.Drawing.Point(1661, 612);
+            this.textBox_pz.Name = "textBox_pz";
+            this.textBox_pz.Size = new System.Drawing.Size(114, 28);
+            this.textBox_pz.TabIndex = 361;
+            this.textBox_pz.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_pz_KeyPress);
+            // 
+            // button_sndpz
+            // 
+            this.button_sndpz.Location = new System.Drawing.Point(1787, 610);
+            this.button_sndpz.Name = "button_sndpz";
+            this.button_sndpz.Size = new System.Drawing.Size(59, 34);
+            this.button_sndpz.TabIndex = 362;
+            this.button_sndpz.Text = "改P";
+            this.button_sndpz.UseVisualStyleBackColor = true;
+            this.button_sndpz.Click += new System.EventHandler(this.button_sndpz_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1890, 913);
+            this.Controls.Add(this.button_sndpz);
+            this.Controls.Add(this.textBox_pz);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.checkBox_jd_OxyOrTva);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.comboBox_jd);
@@ -1110,6 +1143,9 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_ti;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.CheckBox checkBox_jd_OxyOrTva;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox_pz;
+        private System.Windows.Forms.Button button_sndpz;
         
     }
 }

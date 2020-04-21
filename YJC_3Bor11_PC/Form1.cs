@@ -73,6 +73,7 @@ namespace YJC_3Bor11_PC
             button_sndPID.Enabled = false;
             button_sndkz.Enabled = false;
             button_sndbz.Enabled = false;
+            button_sndpz.Enabled = false;
             button1.BackColor = Color.Orange;
             button2.Enabled = false;
             button3.Enabled = false;
@@ -142,7 +143,7 @@ namespace YJC_3Bor11_PC
             comboBox1GetComNum();
             if (comboBox1.Items.Count > 0)
                 comboBox1.Text = comboBox1.Items[0].ToString();
-            comboBox2.Text = "9600"; comboBox3.Text = "无校验";
+            comboBox2.Text = "115200"; comboBox3.Text = "偶校验";
 
             pictureBox_SA.BackColor = Color.Gray; 
             System.Drawing.Drawing2D.GraphicsPath gp2 = new System.Drawing.Drawing2D.GraphicsPath();
@@ -411,6 +412,7 @@ namespace YJC_3Bor11_PC
                     button_sndPID.Enabled = true;
                     button_sndkz.Enabled = true;
                     button_sndbz.Enabled = true;
+                    button_sndpz.Enabled = true;
                     comboBox_cmd.Enabled = true;
                     button_sendcmd.Enabled = true;
                     chart1.Series.Clear(); //清空,恢复默认
@@ -448,6 +450,7 @@ namespace YJC_3Bor11_PC
                 button_sndPID.Enabled = false;
                 button_sndkz.Enabled = false;
                 button_sndbz.Enabled = false;
+                button_sndpz.Enabled = false;
                 button_save.Enabled = false;
                 button_save.UseVisualStyleBackColor = true;
                 comboBox_cmd.Enabled = false;
@@ -1548,6 +1551,10 @@ namespace YJC_3Bor11_PC
             caloxy();
             caljd();
         }
+        private void textBox_pz_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            tb3_KeyPress(sender, e); 
+        }
         private void button_sndkz_Click(object sender, EventArgs e) //发送修改K值
         {
             DialogResult msgboxResult;
@@ -1587,6 +1594,29 @@ namespace YJC_3Bor11_PC
                 richTextBox_HEX.SelectionColor = Color.Red;
                 richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(BitConverter.ToString(ubz_arr).Replace("-", " ") + "\r\n");
+            }
+            else
+                MessageBox.Show("串口错误");
+        }
+        private void button_sndpz_Click(object sender, EventArgs e)
+        {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("只能在开机60s之内改P\r\n确定要修改P值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
+            UInt32 pz = 0;
+            UInt32.TryParse(textBox_pz.Text, out pz);
+            UInt32 upz = BitConverter.ToUInt32(BitConverter.GetBytes(pz), 0);
+            byte[] upz_arr = new byte[] { 0xC0, (byte)upz, (byte)(upz >> 8), (byte)(upz >> 16), (byte)(upz >> 24),0x0C };
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(upz_arr, 0, upz_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(upz_arr).Replace("-", " ") + "\r\n");
             }
             else
                 MessageBox.Show("串口错误");
@@ -1822,6 +1852,11 @@ namespace YJC_3Bor11_PC
         {
             label1.Focus();
         }
+
+        
+
+
+        
 
         
 
