@@ -64,7 +64,7 @@ namespace YJC_3Bor11_PC
         {
             InitializeComponent();
             System.Drawing.Rectangle ScreenArea = System.Windows.Forms.Screen.GetWorkingArea(this);
-            this.Size = new Size(1270, 635);
+            this.Size = new Size(1270, 660);
             //this.WindowState = FormWindowState.Maximized;  //最大化窗体
 
             groupBox1.Enabled = false;
@@ -73,7 +73,9 @@ namespace YJC_3Bor11_PC
             button_sndPID.Enabled = false;
             button_sndkz.Enabled = false;
             button_sndbz.Enabled = false;
-            button_sndpz.Enabled = false;
+            button_sndTm.Enabled = false;
+            button_sndBTm.Enabled = false;
+            button_sndpt.Enabled = false;
             button1.BackColor = Color.Orange;
             button2.Enabled = false;
             button3.Enabled = false;
@@ -253,7 +255,7 @@ namespace YJC_3Bor11_PC
                             richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                             richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff <<<--\r\n"));
                             richTextBox_HEX.SelectionColor = Color.Green;
-                            richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                            richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
                             richTextBox_HEX.AppendText(hexstr + "\r\n");
                         });
                 }
@@ -272,7 +274,7 @@ namespace YJC_3Bor11_PC
                                 }
                                 prerects = nowrects;
                                 richTextBox_HEX.SelectionColor = Color.Green;
-                                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
                                 if (strbufi != "\r")richTextBox_HEX.AppendText(strbufi);
                             });
                         if (strbufi != "\r" && strbufi != "\n")
@@ -412,7 +414,9 @@ namespace YJC_3Bor11_PC
                     button_sndPID.Enabled = true;
                     button_sndkz.Enabled = true;
                     button_sndbz.Enabled = true;
-                    button_sndpz.Enabled = true;
+                    button_sndTm.Enabled = true;
+                    button_sndBTm.Enabled = true;
+                    button_sndpt.Enabled = true;
                     comboBox_cmd.Enabled = true;
                     button_sendcmd.Enabled = true;
                     chart1.Series.Clear(); //清空,恢复默认
@@ -450,7 +454,9 @@ namespace YJC_3Bor11_PC
                 button_sndPID.Enabled = false;
                 button_sndkz.Enabled = false;
                 button_sndbz.Enabled = false;
-                button_sndpz.Enabled = false;
+                button_sndTm.Enabled = false;
+                button_sndBTm.Enabled = false;
+                button_sndpt.Enabled = false;
                 button_save.Enabled = false;
                 button_save.UseVisualStyleBackColor = true;
                 comboBox_cmd.Enabled = false;
@@ -1108,7 +1114,7 @@ namespace YJC_3Bor11_PC
 
             }
         }
-
+        
         private void radioButton_oneCyc_Click(object sender, EventArgs e) //chart曲线图只显示当前一段时间的数据
         {
             chart1.ChartAreas[0].AxisX.Maximum = XYval_pre.Xval.AddSeconds(Fresh_seconds).ToOADate();
@@ -1243,7 +1249,7 @@ namespace YJC_3Bor11_PC
                     richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                     richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
                     richTextBox_HEX.SelectionColor = Color.Red;
-                    richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                    richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
                     richTextBox_HEX.AppendText(cmdstr + "\r\n");
                 }
                 catch (Exception err) { MessageBox.Show("只能输入十六进制数值,空格间隔"); }
@@ -1341,6 +1347,8 @@ namespace YJC_3Bor11_PC
                 e.Handled = false;  //小数点之前必须已经有数字,且未被选中部分不能已经存在点了
             if (e.KeyChar == '-')
                 e.Handled = true;//不能是负号
+            if (e.KeyChar == 24 || e.KeyChar == 3 || e.KeyChar == 22) //Ctl+X Ctl+C Ctl+V
+                e.Handled = false;
         }
         private void tb2_KeyPress(object sender, KeyPressEventArgs e) //允许0x开头的十六进制数或正整数
         {
@@ -1369,6 +1377,8 @@ namespace YJC_3Bor11_PC
                     MessageBox.Show("十六进制Tva值必须以0x开头");
                 }
             }
+            if (e.KeyChar == 24 || e.KeyChar == 3 || e.KeyChar == 22) //Ctl+X Ctl+C Ctl+V
+                e.Handled = false;
         }
         private void tb3_KeyPress(object sender, KeyPressEventArgs e) //只允许正整数
         {
@@ -1380,6 +1390,8 @@ namespace YJC_3Bor11_PC
             e.Handled = "0123456789".IndexOf(char.ToUpper(e.KeyChar)) < 0;
             e.KeyChar = char.ToUpper(e.KeyChar);
             if (e.KeyChar == 8)
+                e.Handled = false;
+            if (e.KeyChar == 24 || e.KeyChar == 3 || e.KeyChar == 22) //Ctl+X Ctl+C Ctl+V
                 e.Handled = false;
         }
         private void textBox_oxy1_KeyPress(object sender, KeyPressEventArgs e)
@@ -1447,15 +1459,35 @@ namespace YJC_3Bor11_PC
                 kz = b_k[1]; bz = b_k[0];
                 textBox_bz.Text = b_k[0].ToString("F08");
                 textBox_kz.Text = b_k[1].ToString("F08");
+
+                FileStream fs_bdjl = new FileStream(System.Windows.Forms.Application.StartupPath +"\\" + "标定记录.txt", FileMode.Append); 
+                StreamWriter sw_bdjl = new StreamWriter(fs_bdjl);
+                sw_bdjl.WriteLine("编号: "+textBox_bh.Text);
+                sw_bdjl.Write("大气压: " + numericUpDown1.Value + "   ");
+                sw_bdjl.WriteLine("时间: "+DateTime.Now.ToString("yyyy-MM-dd HH:mm") );                
+                if (textBox_t1.Text != "") sw_bdjl.Write(textBox_oxy1.Text + "%= " + textBox_t1.Text + "   ");
+                if (textBox_t2.Text != "") sw_bdjl.Write(textBox_oxy2.Text + "%= " + textBox_t2.Text + "   ");
+                if (textBox_t3.Text != "") sw_bdjl.Write(textBox_oxy3.Text + "%= " + textBox_t3.Text + "   ");
+                if (textBox_t4.Text != "") sw_bdjl.Write(textBox_oxy4.Text + "%= " + textBox_t4.Text + "   ");
+                if (textBox_t5.Text != "") sw_bdjl.Write(textBox_oxy5.Text + "%= " + textBox_t5.Text);
+                sw_bdjl.WriteLine();
+                sw_bdjl.WriteLine("K= " + textBox_kz.Text + "    B= " + textBox_bz.Text);
+                sw_bdjl.WriteLine();
+                sw_bdjl.Close();
+                fs_bdjl.Close();
             }
             else
                 MessageBox.Show("填入至少两组氧浓度与Tva");
         }
         private void caloxy()
         {
-            //int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16); //十六进制
-            UInt32 Tva = Convert.ToUInt32(textBox_Tva.Text == "" ? "0":textBox_Tva.Text, textBox_Tva.Text.StartsWith("0x") ? 16 : 10);
-            label_oxy.Text = "氧分压=Tva*K+B= " + (Tva * kz + bz).ToString("F01") + "kpa";
+            try
+            {
+                //int Tva = Convert.ToInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, 16); //十六进制
+                UInt32 Tva = Convert.ToUInt32(textBox_Tva.Text == "" ? "0" : textBox_Tva.Text, textBox_Tva.Text.StartsWith("0x") ? 16 : 10);
+                label_oxy.Text = "氧分压=Tva*K+B= " + (Tva * kz + bz).ToString("F01") + "kpa";
+            }
+            catch(Exception ERR){}
         }
         private void caljd()
         {
@@ -1466,7 +1498,7 @@ namespace YJC_3Bor11_PC
                 try
                 {
                     label_jd.Text = "=(Tva*K+B)-" + numericUpDown1.Value.ToString("F01") + "*\r\n\r\n= "
-                        + ((((Tva * kz + bz) - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01)) * 100).ToString("F01") + "%";
+                        + ((((Tva * kz + bz) - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01)) * 100).ToString("F02") + "%";
                 }
                 catch (Exception err) { }
             }
@@ -1475,7 +1507,7 @@ namespace YJC_3Bor11_PC
                 try
                 {
                     label_jd.Text = "=  Oxy - " + numericUpDown1.Value.ToString("F01") + "*\r\n\r\n= "
-                        + (((recOxy*0.1 - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01)) * 100).ToString("F01") + "%";
+                        + (((recOxy*0.1 - (double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01) / ((double)(numericUpDown1.Value) * Convert.ToDouble(comboBox_jd.Text) * 0.01)) * 100).ToString("F02") + "%";
                 }
                 catch (Exception err) { }
             }
@@ -1517,6 +1549,8 @@ namespace YJC_3Bor11_PC
                 e.Handled = false; //负号不能不是第一位,且未被选中部分不能已经存在负号了
             if (e.KeyChar == 46 && Regex.IsMatch(tb.Text.Substring(0, tb.SelectionStart).Replace("-", ""), @"^\d+$") && !tb.Text.Substring(0, tb.SelectionStart).Contains(".") && !tb.Text.Substring(tb.SelectionStart + tb.SelectionLength).Contains("."))
                 e.Handled = false;  //小数点之前必须已经有数字,且未被选中部分不能已经存在点了
+            if (e.KeyChar == 24 || e.KeyChar == 3 || e.KeyChar == 22) //Ctl+X Ctl+C Ctl+V
+                e.Handled = false;
         }
         private void textBox_kz_TextChanged(object sender, EventArgs e) //k值改变后自动保存ini,更新氧分压与精度
         {
@@ -1543,6 +1577,8 @@ namespace YJC_3Bor11_PC
                 e.Handled = false; //负号不能不是第一位,且未被选中部分不能已经存在负号了
             if (e.KeyChar == 46 && Regex.IsMatch(tb.Text.Substring(0, tb.SelectionStart).Replace("-", ""), @"^\d+$") && !tb.Text.Substring(0, tb.SelectionStart).Contains(".") && !tb.Text.Substring(tb.SelectionStart + tb.SelectionLength).Contains("."))
                 e.Handled = false;  //小数点之前必须已经有数字,且未被选中部分不能已经存在点了
+            if (e.KeyChar == 24 || e.KeyChar == 3 || e.KeyChar == 22) //Ctl+X Ctl+C Ctl+V
+                e.Handled = false;
         }
         private void textBox_bz_TextChanged(object sender, EventArgs e) //k值改变后自动保存ini,更新氧分压与精度
         {
@@ -1551,7 +1587,15 @@ namespace YJC_3Bor11_PC
             caloxy();
             caljd();
         }
-        private void textBox_pz_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBox_Tm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            tb3_KeyPress(sender, e); 
+        }
+        private void textBox_BTm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            tb3_KeyPress(sender, e); 
+        }
+        private void textBox_pt_KeyPress(object sender, KeyPressEventArgs e)
         {
             tb3_KeyPress(sender, e); 
         }
@@ -1571,7 +1615,7 @@ namespace YJC_3Bor11_PC
                 richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
                 richTextBox_HEX.SelectionColor = Color.Red;
-                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(BitConverter.ToString(ukz_arr).Replace("-"," ") + "\r\n");
             }
             else
@@ -1592,13 +1636,13 @@ namespace YJC_3Bor11_PC
                 richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
                 richTextBox_HEX.SelectionColor = Color.Red;
-                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(BitConverter.ToString(ubz_arr).Replace("-", " ") + "\r\n");
             }
             else
                 MessageBox.Show("串口错误");
         }
-        private void button_sndpz_Click(object sender, EventArgs e)
+        private void button_sndpt_Click(object sender, EventArgs e)
         {
             DialogResult msgboxResult;
             msgboxResult = MessageBox.Show("只能在开机60s之内改P\r\n确定要修改P值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
@@ -1607,7 +1651,7 @@ namespace YJC_3Bor11_PC
             UInt32 pz = 0;
             UInt32.TryParse(textBox_pz.Text, out pz);
             UInt32 upz = BitConverter.ToUInt32(BitConverter.GetBytes(pz), 0);
-            byte[] upz_arr = new byte[] { 0xC0, (byte)upz, (byte)(upz >> 8), (byte)(upz >> 16), (byte)(upz >> 24),0x0C };
+            byte[] upz_arr = new byte[] { 0xC5, (byte)upz, (byte)(upz >> 8), (byte)(upz >> 16), (byte)(upz >> 24),0x5C };
             if (serialPort1.IsOpen)
             {
                 serialPort1.Write(upz_arr, 0, upz_arr.Length);
@@ -1615,8 +1659,54 @@ namespace YJC_3Bor11_PC
                 richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
                 richTextBox_HEX.SelectionColor = Color.Red;
-                richTextBox_HEX.SelectionFont = new Font("宋体", 12F, FontStyle.Regular);
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
                 richTextBox_HEX.AppendText(BitConverter.ToString(upz_arr).Replace("-", " ") + "\r\n");
+            }
+            else
+                MessageBox.Show("串口错误");
+        }
+        private void button_sndTm_Click(object sender, EventArgs e)
+        {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("只能在开机60s之内改Tm\r\n确定要修改Tm值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
+            UInt32 Tm = 0;
+            UInt32.TryParse(textBox_Tm.Text, out Tm);
+            UInt32 uTm = BitConverter.ToUInt32(BitConverter.GetBytes(Tm), 0);
+            byte[] uTm_arr = new byte[] { 0xC3, (byte)uTm, (byte)(uTm >> 8), (byte)(uTm >> 16), (byte)(uTm >> 24), 0x3C };
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(uTm_arr, 0, uTm_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(uTm_arr).Replace("-", " ") + "\r\n");
+            }
+            else
+                MessageBox.Show("串口错误");
+        }
+        private void button_sndBTm_Click(object sender, EventArgs e)
+        {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("只能在开机60s之内改BTm\r\n确定要修改BTm值?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
+            UInt32 BTm = 0;
+            UInt32.TryParse(textBox_BTm.Text, out BTm);
+            UInt32 uBTm = BitConverter.ToUInt32(BitConverter.GetBytes(BTm), 0);
+            byte[] uBTm_arr = new byte[] { 0xC4, (byte)uBTm, (byte)(uBTm >> 8), (byte)(uBTm >> 16), (byte)(uBTm >> 24), 0x4C };
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(uBTm_arr, 0, uBTm_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(uBTm_arr).Replace("-", " ") + "\r\n");
             }
             else
                 MessageBox.Show("串口错误");
@@ -1852,6 +1942,54 @@ namespace YJC_3Bor11_PC
         {
             label1.Focus();
         }
+
+        private void button_flashLock_Click(object sender, EventArgs e)
+        {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("只能在开机60s之内加密\r\n确定要加密?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
+
+            byte[] jam_arr = new byte[] { 0xDD, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0xE0, 0x2F };
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(jam_arr, 0, jam_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(jam_arr).Replace("-", " ") + "\r\n");
+            }
+            else
+                MessageBox.Show("串口错误");
+        }
+
+        private void button_flashUnlock_Click(object sender, EventArgs e)
+        {
+            DialogResult msgboxResult;
+            msgboxResult = MessageBox.Show("解密将擦除原有代码!\r\n只能在开机60s之内解密\r\n确定要解密?", "警告", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (msgboxResult == DialogResult.No)
+                return;
+
+            byte[] jem_arr = new byte[] { 0xDD, 0x77,0x66, 0x55, 0x44, 0x33,0x22,0x11, 0xB2, 0x50 };
+            if (serialPort1.IsOpen)
+            {
+                serialPort1.Write(jem_arr, 0, jem_arr.Length);
+                richTextBox_HEX.SelectionColor = Color.Black;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 9F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(DateTime.Now.ToString("HH:mm:ss:fff -->>>\r\n"));
+                richTextBox_HEX.SelectionColor = Color.Red;
+                richTextBox_HEX.SelectionFont = new Font("宋体", 11F, FontStyle.Regular);
+                richTextBox_HEX.AppendText(BitConverter.ToString(jem_arr).Replace("-", " ") + "\r\n");
+            }
+            else
+                MessageBox.Show("串口错误");
+        }
+
+        
+
+        
 
         
 
